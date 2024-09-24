@@ -1,67 +1,94 @@
 package com.example.fundflow.onboarding
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.fundflow.R
 
 @Composable
 fun ButtonUi(
-    text: String = "Next",
-    backgroundColor: Color = Color(0xFF3F40FC),
-    textColor: Color = Color.White, // Changed to white for better contrast
-    textStyle: TextStyle = MaterialTheme.typography.titleMedium,
-    fontSize: Int = 14,
-    onClick: () -> Unit
+    text: String,
+    backgroundColor: Color,
+    textColor: Color,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit,
+    fontSize: Int
 ) {
-    // Define the shape with rounded corners
-    val buttonShape = RoundedCornerShape(100.dp)
-
-    // Define the shadow elevation
-    val shadowElevation = 4.dp
-
-    Button(
-        onClick = onClick,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = backgroundColor,
-            contentColor = textColor
-        ),
-        shape = buttonShape,
-        modifier = Modifier
-            .width(170.dp)  // Set the width of the button
-            .height(50.dp)  // Set the height of the button
-            .shadow(elevation = shadowElevation, shape = buttonShape) // Add shadow effect
+    Box(
+        modifier = modifier
+            .background(backgroundColor)
+            .clickable(onClick = onClick)
+            .padding(vertical = 12.dp, horizontal = 24.dp),
+        contentAlignment = Alignment.Center
     ) {
-        Text(
-            text = text,
-            fontSize = fontSize.sp, // Use fontSize here if not using textStyle
-            style = textStyle
+        Text(text = text, color = textColor, fontSize = fontSize.sp)
+    }
+}
+
+@Composable
+fun GoogleLoginButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Box(
+        modifier = modifier
+            .background(Color.Gray) // Ganti dengan warna sesuai kebutuhan
+            .clickable(onClick = onClick)
+            .padding(vertical = 12.dp, horizontal = 24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_google), // Ganti dengan ID drawable logo Google
+                contentDescription = null, // Deskripsi untuk aksesibilitas
+                modifier = Modifier.size(24.dp) // Atur ukuran logo
+            )
+            Spacer(modifier = Modifier.width(8.dp)) // Jarak antara logo dan teks
+            Text(
+                text = "Login with Google",
+                color = Color.White,
+                fontSize = 16.sp
+            )
+        }
+    }
+}
+
+@Composable
+fun LoginButtonsRow(
+    onLoginClick: () -> Unit,
+    onGoogleLoginClick: () -> Unit
+) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(16.dp), // Spasi antara tombol
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically // Pastikan tombol berada di tengah
+    ) {
+        ButtonUi(
+            text = "Login",
+            backgroundColor = Color(0xFF3F40FC),
+            textColor = Color.White,
+            fontSize = 16,
+            onClick = onLoginClick
         )
+        GoogleLoginButton(onClick = onGoogleLoginClick, modifier = Modifier.weight(1f))
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun ButtonUiPreview() {
-    ButtonUi(
-        text = "Start",
-        backgroundColor = Color(0xFF3F40FC),
-        textColor = Color.White,
-        fontSize = 16, // Adjust as needed
-        onClick = {}
+fun LoginButtonsRowPreview() {
+    LoginButtonsRow(
+        onLoginClick = {},
+        onGoogleLoginClick = {}
     )
 }
-
-
-
-

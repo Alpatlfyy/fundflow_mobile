@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingEnd="24dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp"
+    android:gravity="top|center_horizontal"> <!-- Posisi di bagian atas dan tengah horizontal -->
+
+    <!-- Register Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Register"
+        android:textSize="38sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginBottom="8dp" /> <!-- Memberi sedikit margin ke bawah -->
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_light"
+        android:text="untuk mendaftarkan akun Fundflow,"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:layout_gravity="center" />
+
+    <!-- Description Text Part 2 -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_light"
+        android:text="Anda perlu memasukkan informasi yang sesuai"
+        android:textSize="10sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginBottom="40dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama Anda"
+        android:textSize="12sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#898989"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="start"/>
+
+
+    <LinearLayout
+        android:id="@+id/nameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_edittext_selector"
+        android:padding="10dp"
+        android:layout_marginBottom="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true">
+
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:hint="Masukan nama anda"
+            android:fontFamily="@font/poppins_light"
+            android:background="@android:color/transparent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="0dp"
+            android:gravity="start"
+            android:inputType="textEmailAddress" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nama Pengguna"
+        android:textSize="12sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#898989"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="start"/>
+
+
+    <LinearLayout
+        android:id="@+id/usernameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_edittext_selector"
+        android:padding="10dp"
+        android:layout_marginBottom="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true">
+
+
+        <EditText
+            android:id="@+id/usernameEditText3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:hint="Masukan nama Pengguna"
+            android:fontFamily="@font/poppins_light"
+            android:background="@android:color/transparent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="0dp"
+            android:gravity="start"
+            android:inputType="textEmailAddress" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textSize="12sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#898989"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="start"/>
+
+
+    <LinearLayout
+        android:id="@+id/usernameLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_edittext_selector"
+        android:padding="10dp"
+        android:layout_marginBottom="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true">
+
+
+        <EditText
+            android:id="@+id/usernameEditText4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:hint="Masukan email anda"
+            android:fontFamily="@font/poppins_light"
+            android:background="@android:color/transparent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="0dp"
+            android:gravity="start"
+            android:inputType="textEmailAddress" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Atur sebagai"
+        android:textSize="12sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#898989"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="start"/>
+
+    <LinearLayout
+        android:id="@+id/LayoutSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_edittext_selector"
+        android:padding="10dp"
+        android:layout_marginBottom="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true">
+
+        <!-- Spinner untuk pilihan user role -->
+        <Spinner
+            android:id="@+id/userRoleSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:spinnerMode="dropdown"
+            android:background="@android:color/transparent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="0dp"
+            android:gravity="start" />
+
+        <!-- Icon untuk dropdown -->
+        <ImageView
+            android:id="@+id/dropdownIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_drop_down"
+            android:paddingStart="8dp"
+            app:tint="#ADADAD" />
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textSize="12sp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="#898989"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="start"/>
+
+
+    <LinearLayout
+        android:id="@+id/usernameLayout6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/custom_edittext_selector"
+        android:padding="10dp"
+        android:layout_marginBottom="16dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true">
+
+
+        <EditText
+            android:id="@+id/usernameEditText6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="12dp"
+            android:hint="Masukan password anda"
+            android:fontFamily="@font/poppins_light"
+            android:background="@android:color/transparent"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:paddingTop="2dp"
+            android:paddingBottom="0dp"
+            android:gravity="start"
+            android:inputType="textEmailAddress" />
+    </LinearLayout>
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Daftar"
+        android:textColor="@color/white"
+        android:textAllCaps="false"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/poppins_medium"
+        android:background="@drawable/rounded_button"
+        android:clickable="true"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="50dp"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sudah memiliki akun? "
+            android:textColor="@color/gray"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="12dp"/>
+
+        <TextView
+            android:id="@+id/MasukText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Masuk"
+            android:textColor="@color/primaryColor"
+            android:fontFamily="@font/poppins_medium"
+            android:textSize="12sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginStart="0dp"/>
+    </LinearLayout>
+
+</LinearLayout>
+
+
+
+
+

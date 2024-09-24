@@ -1,55 +1,52 @@
-package com.example.fundflow
+package com.example.fundflow.Activity
 
+import android.os.Build
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.fundflow.onboarding.OnBoardingScreen
 import com.example.fundflow.ui.theme.FundflowTheme
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        installSplashScreen()
+        actionBar?.hide()
 
         setContent {
             FundflowTheme {
-
                 ShowOnBoardingScreen()
             }
         }
-
     }
-
 }
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-private fun ShowOnBoardingScreen() {
+fun ShowOnBoardingScreen() {
     val context = LocalContext.current
 
-    Box(modifier = Modifier.background(color = MaterialTheme.colorScheme.background)){
+    Box(modifier = Modifier.background(MaterialTheme.colors.background)) {
         OnBoardingScreen {
-            Toast.makeText(context, "OnBoarding Completed", Toast.LENGTH_SHORT).show()
+            // Panggil LoginActivity untuk menampilkan bottom sheet
+            LoginActivity.showLoginBottomSheet(context)
         }
     }
-
-
 }
 
-    @Preview(showBackground = true)
-    @Composable
-    fun GreetingPreview() {
-
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview(showBackground = true)
+@Composable
+fun GreetingPreview() {
+    FundflowTheme {
+        ShowOnBoardingScreen()
+    }
 }

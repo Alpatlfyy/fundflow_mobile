@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Fundflow</string>
+    <string name="login_title">Login</string>
+    <string name="Register_title">Login</string>
+
+    <string-array name="user_roles">
+        <item>Atur anda sebagai</item>
+        <item>Finance</item>
+        <item>Invoice</item>
+    </string-array>
 </resources>
