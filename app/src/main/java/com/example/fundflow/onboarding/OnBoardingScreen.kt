@@ -22,19 +22,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
 
-val ButtonBackgroundColor = Color(0xFF3F40FC)
+val ButtonBackgroundColor = Color(android.graphics.Color.parseColor("#0F78CB"))
 
 @OptIn(ExperimentalFoundationApi::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun OnBoardingScreen(onFinished: () -> Unit) {
+fun OnBoardingScreen(onFinished: () -> Unit, initialPage: Int = 0) {
     val pages = listOf(
         OnBoardingModel.FirstPages,
         OnBoardingModel.SecondPages,
         OnBoardingModel.ThirdPages
     )
 
-    val pagerState = rememberPagerState(initialPage = 0) {
+    // Menggunakan initialPage untuk mengatur halaman awal
+    val pagerState = rememberPagerState(initialPage = initialPage) {
         pages.size
     }
 
@@ -69,71 +70,78 @@ fun OnBoardingScreen(onFinished: () -> Unit) {
                             .padding(vertical = 0.dp)
                     )
 
-                    // Mengurangi spasi untuk menggeser tombol ke atas
-                    Spacer(modifier = Modifier.weight(0.02f)) // Menurunkan nilai weight untuk mengangkat tombol
+                    Spacer(modifier = Modifier.weight(1f))
 
-                    // Row untuk tombol Login dan Google Login di halaman terakhir
+                    // Kolom untuk tombol "Login" pada slide ketiga
                     if (pagerState.currentPage == 2) {
-                        Row(
+                        Column(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(horizontal = 16.dp),
-                            horizontalArrangement = Arrangement.SpaceEvenly,
-                            verticalAlignment = Alignment.CenterVertically // Pastikan tombol berada di tengah secara vertikal
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             ButtonUi(
                                 text = "Login",
                                 backgroundColor = ButtonBackgroundColor,
                                 textColor = Color.White,
                                 modifier = Modifier
-                                    .weight(1f)
-                                    .height(50.dp) // Ukuran tinggi tombol
-                                    .clip(RoundedCornerShape(25.dp)), // Rounded corners
+                                    .fillMaxWidth()
+                                    .height(50.dp)
+                                    .clip(RoundedCornerShape(25.dp)),
                                 onClick = {
                                     onFinished()
                                 },
                                 fontSize = 16
                             )
 
-                            Spacer(modifier = Modifier.width(16.dp)) // Beri jarak di antara kedua tombol
+                            Spacer(modifier = Modifier.height(4.dp))
+
+                            // Teks "atau"
+                            Text(
+                                text = "atau",
+                                fontSize = 14.sp,
+                                color = Color.LightGray,
+                            )
+
+                            Spacer(modifier = Modifier.height(4.dp))
 
                             GoogleLoginButton(
                                 onClick = {
                                     // Aksi login dengan Google
                                 },
                                 modifier = Modifier
-                                    .weight(1f)
-                                    .height(50.dp) // Ukuran tinggi tombol
-                                    .clip(RoundedCornerShape(25.dp)) // Rounded corners
+                                    .fillMaxWidth()
+                                    .height(50.dp)
+                                    .clip(RoundedCornerShape(25.dp))
                             )
                         }
                     } else {
-                        Box(
+                        // Tombol "Lanjut" sebelum halaman terakhir
+                        ButtonUi(
+                            text = "Lanjut",
+                            backgroundColor = ButtonBackgroundColor,
+                            textColor = Color.White,
+                            onClick = {
+                                scope.launch {
+                                    if (pagerState.currentPage < pages.size - 1) {
+                                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                                    }
+                                }
+                            },
+                            fontSize = 16,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            ButtonUi(
-                                text = "Lanjut",
-                                backgroundColor = ButtonBackgroundColor,
-                                textColor = Color.White,
-                                onClick = {
-                                    scope.launch {
-                                        if (pagerState.currentPage < pages.size - 1) {
-                                            pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                                        }
-                                    }
-                                },
-                                fontSize = 16,
-                                modifier = Modifier
-                                    .height(50.dp) // Ukuran tinggi tombol
-                                    .clip(RoundedCornerShape(25.dp)) // Rounded corners
-                            )
-                        }
+                                .padding(horizontal = 16.dp)
+                                .height(50.dp)
+                                .clip(RoundedCornerShape(25.dp))
+                        )
                     }
+
+                    Spacer(modifier = Modifier.height(30.dp))
                 }
 
+                // Tombol Skip untuk langsung ke halaman terakhir
                 IconButton(
                     onClick = {
                         scope.launch {
@@ -152,6 +160,7 @@ fun OnBoardingScreen(onFinished: () -> Unit) {
                     )
                 }
 
+                // Tombol Back untuk kembali ke halaman sebelumnya
                 if (pagerState.currentPage > 0) {
                     IconButton(
                         onClick = {
@@ -181,5 +190,5 @@ fun OnBoardingScreen(onFinished: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun OnboardingScreenPreview() {
-    OnBoardingScreen {}
+    OnBoardingScreen(onFinished = {}, initialPage = 0)
 }

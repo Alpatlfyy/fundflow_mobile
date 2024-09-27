@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#3F40FC</color>
+    <color name="primaryColor">#0F78CB</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -12,6 +12,7 @@
     <color name="editTextBackground">#FFFFFF</color>
     <color name="editTextTextColor">#000000</color>
     <color name="bottom_nav_color">#ADADAD</color>
-    <color name="bottom_nav_color_selected">#3F40FC</color>
-    <color name="status_bar_color">#3F40FC</color>
+    <color name="bottom_nav_color_selected">#0F78CB</color>
+    <color name="status_bar_color">#0F78CB</color>
+    <color name="blue_00549C">#00549C</color>
 </resources>

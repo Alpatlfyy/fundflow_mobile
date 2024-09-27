@@ -3,7 +3,7 @@
     <item android:state_focused="true">
         <shape android:shape="rectangle">
             <solid android:color="@android:color/transparent"/>
-            <stroke android:width="2dp" android:color="#0000FF"/> <!-- Warna biru saat fokus -->
+            <stroke android:width="2dp" android:color="#0F78CB"/> <!-- Warna biru saat fokus -->
             <corners android:radius="8dp"/>
         </shape>
     </item>

@@ -21,37 +21,36 @@
     )
 
     private val LightColorScheme = lightColorScheme(
-        primary = Purple40,
+//        primary = Purple40,
         secondary = PurpleGrey40,
         tertiary = Pink40
     )
 
     @Composable
     fun FundflowTheme(
-        darkTheme: Boolean = isSystemInDarkTheme(),
+        darkTheme: Boolean = false, // Paksa untuk selalu menggunakan mode light
         dynamicColor: Boolean = true,
         content: @Composable () -> Unit
     ) {
         val context = LocalContext.current
         val activity = context as Activity
 
-        // Determine the color scheme
+        // Tentukan color scheme
         val colorScheme = when {
             dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-                if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+                dynamicLightColorScheme(context) // Selalu gunakan dynamic light color scheme
             }
-            darkTheme -> DarkColorScheme
             else -> LightColorScheme
         }
 
-        // Update status bar color
-        activity.window.statusBarColor = if (darkTheme) Color.Black.toArgb() else Color.White.toArgb()
+        // Update warna status bar
+        activity.window.statusBarColor = Color.White.toArgb() // Selalu putih untuk mode light
 
-        // Control the appearance of the status bar icons
+        // Kontrol tampilan ikon di status bar
         val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
-        windowInsetsController?.isAppearanceLightStatusBars = !darkTheme
+        windowInsetsController?.isAppearanceLightStatusBars = true // Ikon status bar tetap gelap di mode light
 
-        // Apply MaterialTheme
+        // Terapkan MaterialTheme
         MaterialTheme(
             colorScheme = colorScheme,
             typography = MaterialTheme.typography,

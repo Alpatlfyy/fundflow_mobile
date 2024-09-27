@@ -13,12 +13,14 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import com.example.fundflow.R
 
 class RegisterActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(R.layout.activity_register)
 
         // Inisialisasi Spinner dan Icon
@@ -69,7 +71,8 @@ class RegisterActivity : ComponentActivity() {
 
 
         MasukText.setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("INITIAL_PAGE", 2) // Mengirimkan halaman ketiga (index 2)
             startActivity(intent)
         }
     }

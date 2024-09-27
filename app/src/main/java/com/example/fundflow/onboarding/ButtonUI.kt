@@ -2,12 +2,15 @@ package com.example.fundflow.onboarding
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -28,7 +31,9 @@ fun ButtonUi(
         modifier = modifier
             .background(backgroundColor)
             .clickable(onClick = onClick)
-            .padding(vertical = 12.dp, horizontal = 24.dp),
+            .padding(vertical = 16.dp, horizontal = 24.dp) // Padding untuk memastikan ruang di dalam tombol
+            .height(56.dp) // Ukuran tinggi yang konsisten
+            .clip(RoundedCornerShape(25.dp)), // Rounded corners
         contentAlignment = Alignment.Center
     ) {
         Text(text = text, color = textColor, fontSize = fontSize.sp)
@@ -42,52 +47,82 @@ fun GoogleLoginButton(
 ) {
     Box(
         modifier = modifier
-            .background(Color.Gray) // Ganti dengan warna sesuai kebutuhan
+             // Mengubah warna latar belakang menjadi putih
+            .border(1.dp, Color.Gray, RoundedCornerShape(25.dp)) // Menambahkan border abu-abu
             .clickable(onClick = onClick)
-            .padding(vertical = 12.dp, horizontal = 24.dp),
+            .clip(RoundedCornerShape(25.dp)), // Rounded corners
         contentAlignment = Alignment.Center
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            modifier = Modifier
+                .padding(vertical = 12.dp, horizontal = 16.dp) // Padding untuk memperbesar ukuran Row
+                .height(56.dp), // Atur tinggi Row agar sesuai dengan tombol lainnya
+            verticalAlignment = Alignment.CenterVertically, // Menyelaraskan logo dan teks secara vertikal
+            horizontalArrangement = Arrangement.Center // Menyelaraskan logo dan teks secara horizontal
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.ic_google), // Ganti dengan ID drawable logo Google
-                contentDescription = null, // Deskripsi untuk aksesibilitas
-                modifier = Modifier.size(24.dp) // Atur ukuran logo
+                contentDescription = "Login with Google", // Deskripsi untuk aksesibilitas
+                modifier = Modifier.size(36.dp) // Atur ukuran logo (lebih besar)
             )
             Spacer(modifier = Modifier.width(8.dp)) // Jarak antara logo dan teks
             Text(
                 text = "Login with Google",
-                color = Color.White,
-                fontSize = 16.sp
+                // Ubah warna teks menjadi hitam agar kontras dengan latar belakang putih
+                fontSize = 16.sp // Ukuran font
             )
         }
     }
 }
 
+
+
 @Composable
-fun LoginButtonsRow(
+fun LoginButtonsWithText(
     onLoginClick: () -> Unit,
     onGoogleLoginClick: () -> Unit
 ) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(16.dp), // Spasi antara tombol
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically // Pastikan tombol berada di tengah
+        horizontalArrangement = Arrangement.spacedBy(16.dp), // Spasi antara tombol dan teks "atau"
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp), // Menambahkan padding horizontal
+        verticalAlignment = Alignment.CenterVertically // Posisikan tombol di tengah
     ) {
         ButtonUi(
             text = "Login",
             backgroundColor = Color(0xFF3F40FC),
             textColor = Color.White,
             fontSize = 16,
+            modifier = Modifier
+                .weight(1f) // Menggunakan weight untuk membuat tombol lebih fleksibel
+                .height(56.dp) // Ukuran tinggi yang konsisten
+                .clip(RoundedCornerShape(25.dp)),
             onClick = onLoginClick
         )
-        GoogleLoginButton(onClick = onGoogleLoginClick, modifier = Modifier.weight(1f))
+
+        // Text "atau" di antara tombol
+        Text(
+            text = "atau",
+            fontSize = 14.sp,
+            color = Color.Gray,
+            modifier = Modifier.padding(horizontal = 8.dp)
+        )
+
+        GoogleLoginButton(
+            onClick = onGoogleLoginClick,
+            modifier = Modifier
+                .weight(1f) // Menggunakan weight untuk membuat tombol lebih fleksibel
+                .height(56.dp) // Ukuran tinggi yang konsisten
+                .clip(RoundedCornerShape(25.dp))
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
-fun LoginButtonsRowPreview() {
-    LoginButtonsRow(
+fun LoginButtonsWithTextPreview() {
+    LoginButtonsWithText(
         onLoginClick = {},
         onGoogleLoginClick = {}
     )

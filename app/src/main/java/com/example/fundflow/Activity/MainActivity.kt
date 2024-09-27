@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.material.MaterialTheme
@@ -19,11 +20,15 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         actionBar?.hide()
+
+        // Ambil parameter initialPage dari intent
+        val initialPage = intent.getIntExtra("INITIAL_PAGE", 0)
 
         setContent {
             FundflowTheme {
-                ShowOnBoardingScreen()
+                ShowOnBoardingScreen(initialPage)
             }
         }
     }
@@ -31,14 +36,14 @@ class MainActivity : ComponentActivity() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ShowOnBoardingScreen() {
+fun ShowOnBoardingScreen(initialPage: Int) {
     val context = LocalContext.current
 
     Box(modifier = Modifier.background(MaterialTheme.colors.background)) {
-        OnBoardingScreen {
+        OnBoardingScreen(onFinished = {
             // Panggil LoginActivity untuk menampilkan bottom sheet
             LoginActivity.showLoginBottomSheet(context)
-        }
+        }, initialPage = initialPage) // Kirimkan initialPage ke OnBoardingScreen
     }
 }
 
@@ -47,6 +52,6 @@ fun ShowOnBoardingScreen() {
 @Composable
 fun GreetingPreview() {
     FundflowTheme {
-        ShowOnBoardingScreen()
+        ShowOnBoardingScreen(0) // Menampilkan halaman pertama sebagai contoh
     }
 }

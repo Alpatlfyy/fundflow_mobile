@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 fun IndicatorUI(
     pageSize: Int,
     currentPage: Int,
-    selectedColor: Color = Color(0xFF3F40FC),
+    selectedColor: Color = Color(android.graphics.Color.parseColor("#0F78CB")),
     unselectedColor: Color = MaterialTheme.colorScheme.secondaryContainer,
     indicatorHeight: Dp = 10.dp,
     modifier: Modifier = Modifier

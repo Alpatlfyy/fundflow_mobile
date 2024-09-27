@@ -2,35 +2,45 @@ package com.example.fundflow.Activity
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.view.Window
+import android.view.inputmethod.InputMethodManager
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.ui.graphics.Color
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.example.fundflow.R
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import android.view.LayoutInflater
 
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
+        // Menampilkan BottomSheet saat Activity diluncurkan
+        showLoginBottomSheet(this)
     }
 
     companion object {
         fun showLoginBottomSheet(context: Context) {
             val view = LayoutInflater.from(context).inflate(R.layout.activity_login, null)
-            val bottomSheetDialog = BottomSheetDialog(context)
+            val bottomSheetDialog = BottomSheetDialog(context, R.style.BottomSheetTransparant)
             bottomSheetDialog.setContentView(view)
+            bottomSheetDialog.show()
 
             // Inisialisasi komponen UI di bottom sheet
             val registerText = view.findViewById<TextView>(R.id.registerText)
@@ -41,19 +51,20 @@ class LoginActivity : AppCompatActivity() {
             val passwordEditText = view.findViewById<EditText>(R.id.passwordEditText)
             val passwordToggle = view.findViewById<ImageView>(R.id.passwordToggle)
 
+            // Menangani klik pada teks register
             registerText.setOnClickListener {
                 context.startActivity(Intent(context, RegisterActivity::class.java))
             }
 
+            // Menangani klik pada tombol login
             loginButton.setOnClickListener {
                 Log.d("LoginActivity", "Login button clicked")
                 context.startActivity(Intent(context, DashboardActivity::class.java))
             }
 
             // Listener untuk fokus dan klik di username
-            usernameEditText.setOnClickListener {
+            usernameLayout.setOnClickListener {
                 usernameEditText.requestFocus()
-                usernameLayout.setBackgroundResource(R.drawable.custom_edittext_focused)
             }
 
             // Mengubah background saat fokus pada username
@@ -63,24 +74,15 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
 
-            usernameLayout.setOnClickListener {
-                usernameEditText.requestFocus()
-            }
-
             // Listener untuk fokus dan klik di password
-            passwordEditText.setOnClickListener {
+            passwordLayout.setOnClickListener {
                 passwordEditText.requestFocus()
-                passwordLayout.setBackgroundResource(R.drawable.custom_edittext_focused)
             }
 
             passwordEditText.setOnFocusChangeListener { _, hasFocus ->
                 passwordLayout.setBackgroundResource(
                     if (hasFocus) R.drawable.custom_edittext_focused else R.drawable.custom_edittext_selector
                 )
-            }
-
-            passwordLayout.setOnClickListener {
-                passwordEditText.requestFocus()
             }
 
             // Toggle visibility untuk password
@@ -98,7 +100,36 @@ class LoginActivity : AppCompatActivity() {
                 passwordEditText.requestFocus()
             }
 
+            // Menambahkan listener untuk menyembunyikan keyboard saat mengklik di luar EditText
+            view.setOnClickListener {
+                hideKeyboard(view)
+                usernameEditText.clearFocus()
+                passwordEditText.clearFocus()
+            }
+
+            // Menampilkan BottomSheetDialog
             bottomSheetDialog.show()
+            bottomSheetDialog.setOnShowListener {
+                val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+                bottomSheet?.let {
+                    // Mengatur layout
+                    it.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                    it.background = ContextCompat.getDrawable(context, R.drawable.rounded_background)
+
+                    // Mengatur Gravity
+                    val window = bottomSheetDialog.window
+                    window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                    window?.setBackgroundDrawable(ContextCompat.getDrawable(context, R.drawable.rounded_background))
+                    window?.setGravity(Gravity.BOTTOM)
+                }
+            }
+
+        }
+
+        // Fungsi untuk menyembunyikan keyboard
+        private fun hideKeyboard(view: View) {
+            val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 }
