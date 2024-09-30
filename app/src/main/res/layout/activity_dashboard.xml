@@ -325,26 +325,26 @@
                     android:layout_marginTop="8dp">
 
                     <TextView
-                        android:text="Selisih"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textSize="16sp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="start"
-                        android:textColor="#00549C"/>
-
-                    <TextView
-                        android:id="@+id/selisih_total"
-                        android:text="Rp -5.000,00"
-                        android:textStyle="bold"
-                        android:fontFamily="@font/poppins_medium"
-                        android:textSize="16sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="#FF4747"
-                        android:layout_marginStart="8dp" />
+                        android:fontFamily="@font/poppins_light"
+                        android:text="Selisih"
+                        android:textColor="#00549C"
+                        android:textSize="10dp"
+                        android:textStyle="bold" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/selisih_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="0dp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Rp -5.000,00"
+                    android:textColor="#FF4747"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
