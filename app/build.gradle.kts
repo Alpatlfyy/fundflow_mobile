@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.storage.CacheResetOnProcessCanceled.enabled
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
@@ -6,6 +8,7 @@ plugins {
 android {
     namespace = "com.example.fundflow"
     compileSdk = 34
+
 
     defaultConfig {
         applicationId = "com.example.fundflow"
@@ -38,6 +41,8 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true  // Mengaktifkan View Binding
+        dataBinding = true  // Mengaktifkan Data Binding
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -74,6 +79,7 @@ dependencies {
 
     // Splash API
     implementation(libs.androidx.core.splashscreen)
+
 
     // Jetpack Compose dependencies
     implementation("androidx.compose.ui:ui:1.5.0")
@@ -142,6 +148,8 @@ dependencies {
     implementation ("androidx.compose.material3:material3:1.0.0-alpha02")
     implementation ("androidx.compose.ui:ui-tooling-preview:1.3.0")
 
+    implementation ("com.github.bumptech.glide:glide:4.14.2") // Ganti dengan versi terbaru jika perlu
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
 
 
 
