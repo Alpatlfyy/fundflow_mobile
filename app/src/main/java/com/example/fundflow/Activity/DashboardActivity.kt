@@ -1,6 +1,7 @@
 package com.example.fundflow.Activity
 
 import ExpenseListAdapter
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -24,36 +25,44 @@ class DashboardActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
 
-        window.setFlags(
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
-        )
+
+
+
+//        window.setFlags(
+//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+//            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+//        )
 
         initRecycleview()
 
-        // Ganti warna Status Bar
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.statusBarColor = getColor(R.color.blue_00549C)
-        }
+//        // Ganti warna Status Bar
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            window.statusBarColor = getColor(R.color.white)
+//        }
 
 
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+
+        bottomNavigationView.background = null
+        bottomNavigationView.menu.getItem(2).isEnabled = false
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.nav_home -> {
+                R.id.home -> {
                     // Handle home action
                     true
                 }
-                R.id.nav_arus_kas -> {
+                R.id.activity -> {
                     // Handle arus kas action
                     true
                 }
-                R.id.nav_report -> {
+                R.id.report -> {
                     // Handle report action
                     true
                 }
-                R.id.nav_profile -> {
+                R.id.profile -> {
                     // Handle profile action
                     true
                 }

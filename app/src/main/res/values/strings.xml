@@ -2,6 +2,8 @@
     <string name="app_name">Fundflow</string>
     <string name="login_title">Login</string>
     <string name="Register_title">Login</string>
+    <string name="back">Kembali</string>
+
 
     <string-array name="user_roles">
         <item>Atur anda sebagai</item>

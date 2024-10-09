@@ -31,7 +31,7 @@ fun ButtonUi(
         modifier = modifier
             .background(backgroundColor)
             .clickable(onClick = onClick)
-            .padding(vertical = 16.dp, horizontal = 24.dp) // Padding untuk memastikan ruang di dalam tombol
+            .padding(vertical = 12.dp, horizontal = 16.dp) // Padding untuk memastikan ruang di dalam tombol
             .height(56.dp) // Ukuran tinggi yang konsisten
             .clip(RoundedCornerShape(25.dp)), // Rounded corners
         contentAlignment = Alignment.Center

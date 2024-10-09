@@ -9,8 +9,6 @@ class MainRepository {
     val items = mutableListOf(
         ExpenseDomain("Jasa Konsultan", 57323.23, "img1", "4 April 2025"), // Pemasukan
         ExpenseDomain("Gaji Karyawan", 40019.19, "img2", "5 April 2025"),   // Pengeluaran
-        ExpenseDomain("Jasa Lingkungan", 50010.10, "img1", "6 April 2025"), // Pemasukan
-        ExpenseDomain("Gaji Karyawan", 40019.19, "img2", "10 April 2025"),  // Pengeluaran
     )
 
     fun getFormattedPrice(price: Double, pic: String): String {
