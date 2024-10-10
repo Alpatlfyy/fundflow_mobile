@@ -10,4 +10,5 @@
         <item>Finance</item>
         <item>Invoice</item>
     </string-array>
+    <string name="title_activity_profile_actifity">ProfileActifity</string>
 </resources>
