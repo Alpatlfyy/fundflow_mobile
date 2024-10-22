@@ -52,6 +52,13 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:configChanges="uiMode"/>
 
+        <activity
+            android:name=".Activity.ArusKasActivity"
+            android:exported="true"
+            android:label="CashFlow"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:configChanges="uiMode"/>
+
 
     </application>
 

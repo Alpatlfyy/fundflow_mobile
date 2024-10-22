@@ -4,6 +4,7 @@
     <string name="Register_title">Login</string>
     <string name="back">Kembali</string>
 
+    <string name="add_category_instruction">Tambahkan kas baru untuk memulai \n pengelompokan data Anda</string>
 
     <string-array name="user_roles">
         <item>Atur anda sebagai</item>

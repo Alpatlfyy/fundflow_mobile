@@ -4,6 +4,8 @@ import ExpenseListAdapter
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.WindowInsetsController
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -14,6 +16,7 @@ import com.example.fundflow.R
 import com.example.fundflow.ViewModel.MainViewModel
 import com.example.fundflow.databinding.ActivityDashboardBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DashboardActivity : AppCompatActivity() {
     lateinit var binding: ActivityDashboardBinding
@@ -35,18 +38,38 @@ class DashboardActivity : AppCompatActivity() {
 
         initRecycleview()
 
-//        // Ganti warna Status Bar
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            window.statusBarColor = getColor(R.color.white)
-//        }
+// Ganti warna Status Bar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.statusBarColor = getColor(R.color.white_dsbd) // Mengatur warna status bar ke putih
+
+            // Mengatur ikon dan teks status bar menjadi gelap
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                window.insetsController?.setSystemBarsAppearance(
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS, // Ikon dan teks gelap
+                    WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS // Mengatur flag
+                )
+            } else {
+                window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR // Untuk versi Android sebelum R
+            }
+        }
 
 
 
+
+        // Inisialisasi FAB
+        val fab: FloatingActionButton = findViewById(R.id.fab)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
+
+        // Set onClickListener untuk FAB
+        fab.setOnClickListener {
+            // Navigasi ke CashflowActivity
+            val intent = Intent(this, CashFlowActivity::class.java)
+            startActivity(intent)
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
