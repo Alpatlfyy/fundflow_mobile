@@ -8,7 +8,7 @@
             android:pathData="M0 40C0 17.9 17.9 0 40 0h310c22.1 0 40 17.9 40 40v250H0V40Z"/>
         <group>
             <path
-                android:fillColor="#FF2929A6"
+                android:fillColor="#00549C"
                 android:pathData="M0-3H390V289H0z"/>
             <path
                 android:fillColor="#1AD9D9D9"

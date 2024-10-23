@@ -12,6 +12,21 @@
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         tools:targetApi="31">
         <activity
+            android:name=".Activity.AddInvoiceActifity"
+            android:exported="false"
+            android:label="@string/title_activity_add_invoice_actifity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.InvoiceListActifity"
+            android:exported="false"
+            android:label="@string/title_activity_invoice_list_actifity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.reportActifity"
+            android:exported="false"
+            android:label="@string/title_activity_report_actifity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
             android:name=".Activity.ProfileActifity"
             android:exported="false"
             android:label="@string/title_activity_profile_actifity"
