@@ -15,4 +15,6 @@
     <color name="bottom_nav_color_selected">#0F78CB</color>
     <color name="status_bar_color">#0F78CB</color>
     <color name="blue_00549C">#00549C</color>
+    <color name="dark_color">#333333</color>
+    <color name="white_dsbd">#F6F6F6</color>
 </resources>
