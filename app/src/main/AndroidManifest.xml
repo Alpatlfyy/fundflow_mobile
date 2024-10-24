@@ -22,12 +22,12 @@
             android:label="@string/title_activity_invoice_list_actifity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
-            android:name=".Activity.reportActifity"
+            android:name=".Activity.reportActivity"
             android:exported="false"
             android:label="@string/title_activity_report_actifity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
-            android:name=".Activity.ProfileActifity"
+            android:name=".Activity.ProfileActivity"
             android:exported="false"
             android:label="@string/title_activity_profile_actifity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
@@ -61,15 +61,13 @@
             android:configChanges="uiMode"
             android:exported="true"
             android:label="Dashboard"
-            android:theme="@style/Theme.Fab_Bottom_app_bar" />
+            android:theme="@style/Theme.MaterialComponents.DayNight" />
         <activity
             android:name=".Activity.CashFlowActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="CashFlow"
-<<<<<<< HEAD
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:configChanges="uiMode"/>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
         <activity
             android:name=".Activity.ArusKasActivity"
@@ -77,11 +75,6 @@
             android:label="CashFlow"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:configChanges="uiMode"/>
-
-
-=======
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
->>>>>>> 9b8700dd3ee8de4476689c461db4a1e8153563af
     </application>
 
 </manifest>

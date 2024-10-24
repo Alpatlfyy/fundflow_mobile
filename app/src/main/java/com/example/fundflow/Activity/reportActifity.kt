@@ -2,7 +2,10 @@ package com.example.fundflow.Activity
 
 import android.app.DatePickerDialog
 import android.graphics.Paint
+import android.os.Bundle
 import android.widget.DatePicker
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -43,7 +46,16 @@ import com.example.fundflow.Activity.ui.theme.Purple700
 import com.example.fundflow.Activity.ui.theme.Teal200
 import com.example.fundflow.R
 import java.util.Calendar
+class reportActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            FundflowTheme {
 
+            }
+        }
+    }
+}
 
 @Composable
 fun PieChart(
