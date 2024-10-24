@@ -2,7 +2,11 @@ package com.example.fundflow.Activity
 
 import android.app.DatePickerDialog
 import android.graphics.Paint
+import android.os.Bundle
 import android.widget.DatePicker
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -44,7 +48,17 @@ import com.example.fundflow.Activity.ui.theme.Teal200
 import com.example.fundflow.R
 import java.util.Calendar
 
+class reportActifity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            FundflowTheme {
 
+            }
+        }
+    }
+}
 @Composable
 fun PieChart(
     data: Map<String, Int>,

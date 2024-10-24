@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.fundflow.onboarding.OnBoardingScreen
-import com.example.fundflow.ui.theme.FundflowTheme
+import com.example.fundflow.Activity.ui.theme.FundflowTheme
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)

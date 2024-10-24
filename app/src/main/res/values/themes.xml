@@ -32,5 +32,4 @@
 
     <style name="Theme.MaterialComponents.DayNight.NoActionBar" parent="android:Theme.Material.Light.NoActionBar" />
 
-
 </resources>

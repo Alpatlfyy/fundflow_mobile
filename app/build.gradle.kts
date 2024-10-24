@@ -144,22 +144,24 @@ dependencies {
     // Jika Anda menggunakan ViewModel
     implementation ("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.0")
 
-    implementation ("androidx.compose.ui:ui:1.3.0")
-    implementation ("androidx.compose.material3:material3:1.0.0-alpha02")
-    implementation ("androidx.compose.ui:ui-tooling-preview:1.3.0")
+//    implementation ("androidx.compose.ui:ui:1.3.0")
+//    implementation ("androidx.compose.material3:material3:1.0.0-alpha02")
+//    implementation ("androidx.compose.ui:ui-tooling-preview:1.3.0")
 
     implementation ("com.github.bumptech.glide:glide:4.14.2") // Ganti dengan versi terbaru jika perlu
     annotationProcessor ("com.github.bumptech.glide:compiler:4.14.2")
 
-    implementation ("com.google.android.material:material:1.9.0")
+//    implementation ("com.google.android.material:material:1.9.0")
 
-    implementation ("com.google.android.material:material:1.10.0")
+//    implementation ("com.google.android.material:material:1.10.0")
 
-    implementation ("com.google.android.material:material:1.3.0-alpha03")
-
+//    implementation ("com.google.android.material:material:1.3.0-alpha03")
+//    implementation ("com.google.android.material:material:<latest_version>")
+//
     implementation ("com.google.android.material:material:1.9.0")
 
     implementation ("androidx.viewpager2:viewpager2:1.1.0")
+
 
 
 
