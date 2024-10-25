@@ -1,5 +1,6 @@
 package com.example.fundflow.Activity
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.graphics.Paint
 import android.os.Bundle
@@ -36,7 +37,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-
 import com.example.fundflow.Activity.ui.theme.*
 import com.example.fundflow.Activity.ui.theme.Blue
 import com.example.fundflow.Activity.ui.theme.FundflowTheme
@@ -45,13 +45,22 @@ import com.example.fundflow.Activity.ui.theme.Purple500
 import com.example.fundflow.Activity.ui.theme.Purple700
 import com.example.fundflow.Activity.ui.theme.Teal200
 import com.example.fundflow.R
+
 import java.util.Calendar
+
+
 class reportActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             FundflowTheme {
-
+                val sampleData = mapOf(
+                    "Category 1" to 40,
+                    "Category 2" to 30,
+                    "Category 3" to 20,
+                    "Category 4" to 10
+                )
+                PieChart(data = sampleData)
             }
         }
     }
@@ -70,6 +79,8 @@ fun PieChart(
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
     val day = calendar.get(Calendar.DAY_OF_MONTH)
+    val context = LocalContext.current
+
 
     // State untuk mengontrol kapan DatePicker ditampilkan
     var showDatePicker by remember { mutableStateOf(false) }
@@ -163,9 +174,13 @@ fun PieChart(
                     painter = painterResource(id = R.drawable.ic_back_arrow),
                     contentDescription = "Back Arrow",
                     modifier = Modifier
-                        .size(24.dp)  // Ukuran ikon
+                        .size(24.dp)
                         .align(Alignment.CenterVertically) // Agar ikon sejajar vertikal
+                        .clickable {
+                            (context as? Activity)?.finish()
+                        }
                 )
+
 
                 // Spasi di antara ikon dan teks
                 Spacer(modifier = Modifier.width(125.dp))
@@ -188,7 +203,7 @@ fun PieChart(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 100.dp),
+                .padding(top = 80.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // Tambahkan teks "Laporan bulan ini" di atas pie chart dengan align kiri

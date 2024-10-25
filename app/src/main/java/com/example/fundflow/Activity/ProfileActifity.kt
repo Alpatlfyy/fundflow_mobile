@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.zIndex
 import com.example.fundflow.Activity.ui.theme.FundflowTheme
 import com.example.fundflow.R
@@ -39,6 +40,8 @@ fun ProfileScreen() {
                 modifier = Modifier
                     .fillMaxSize()
             ) {
+                val context = LocalContext.current
+
                 // Gambar latar belakang utama
                 Image(
                     painter = painterResource(id = R.drawable.background_top_main),
@@ -73,7 +76,7 @@ fun ProfileScreen() {
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    IconButton(onClick = { /* Action when button is clicked */ }) {
+                    IconButton(onClick = { (context as? ComponentActivity)?.finish()}) {
                         Icon(
                             painter = painterResource(id = R.drawable.ic_back_arrow), // Use appropriate icon resource
                             contentDescription = "Edit Icon",
