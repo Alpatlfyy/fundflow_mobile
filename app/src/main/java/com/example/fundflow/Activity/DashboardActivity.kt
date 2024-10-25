@@ -83,10 +83,13 @@ class DashboardActivity : AppCompatActivity() {
                 }
                 R.id.report -> {
                     // Handle report action
+                    val intent = Intent(this, reportActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.profile -> {
-                    // Handle profile action
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false
