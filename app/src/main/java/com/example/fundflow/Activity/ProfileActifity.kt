@@ -1,3 +1,5 @@
+package com.example.fundflow.Activity
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,8 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.zIndex
-import com.example.fundflow.Activity.ui.theme.FundflowTheme
+import com.example.fundflow.ui.theme.FundflowTheme
 import com.example.fundflow.R
 
 class ProfileActivity : ComponentActivity() {
@@ -34,71 +35,42 @@ class ProfileActivity : ComponentActivity() {
 fun ProfileScreen() {
     Scaffold(
         topBar = {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
+            TopAppBar(
+                title = {
+                    Text(text = "Profile", color = Color.White)
+                },
+                navigationIcon = {
+                    IconButton(onClick = { /* Handle back button */ }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_back_arrow),
+                            contentDescription = "Back",
+                            tint = Color.White
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
+            )
+        }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+        ) {
+            Box {
                 // Gambar latar belakang utama
                 Image(
                     painter = painterResource(id = R.drawable.background_top_main),
                     contentDescription = "Background Top Main",
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(400.dp)
-                        .zIndex(1f),
+                        .height(250.dp),
                     contentScale = ContentScale.Crop
                 )
 
-                // Gambar latar belakang kedua
-                Image(
-                    painter = painterResource(id = R.drawable.background_cover),
-                    contentDescription = "Background Cover",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 200.dp)
-                        .zIndex(1f),
-                    contentScale = ContentScale.Crop
-                )
-
-                // Konten di atas gambar
+                // Konten profil
                 ProfileContent()
-
-                // Text and Icon Button in the top-right corner
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .zIndex(4f),
-                    horizontalArrangement = Arrangement.Start,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    IconButton(onClick = { /* Action when button is clicked */ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.ic_back_arrow), // Use appropriate icon resource
-                            contentDescription = "Edit Icon",
-                            tint = Color.White
-                        )
-
-                    }
-                    Text(
-                        text = "Profile",
-                        style = MaterialTheme.typography.titleMedium,
-                        modifier = Modifier.padding(end = 8.dp),
-                        color = Color.White
-                    )
-
-
-                }
             }
-        }
-    ) { padding ->
-        // Gunakan padding yang diteruskan dari Scaffold
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(padding)
-        ) {
-            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
@@ -108,8 +80,7 @@ fun ProfileContent() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 187.dp)
-            .zIndex(3f),
+            .padding(top = 160.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // Gambar profil
@@ -141,7 +112,7 @@ fun ProfileContent() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // Add menu items below profile information
+        // Menu items
         MenuItem(iconResId = R.drawable.loc_icon, label = "Alamat")
         MenuItem(iconResId = R.drawable.data_icon, label = "Ubah data pribadi")
         MenuItem(iconResId = R.drawable.lock_icon, label = "Ubah password")

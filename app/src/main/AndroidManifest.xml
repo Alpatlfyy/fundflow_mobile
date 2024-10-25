@@ -11,11 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         tools:targetApi="31">
+
         <activity
-            android:name=".Activity.ProfileActifity"
+            android:name=".Activity.ProfileActivity"
             android:exported="false"
             android:label="@string/title_activity_profile_actifity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+
         <activity
             android:name=".Activity.MainActivity"
             android:configChanges="uiMode"
@@ -24,10 +26,10 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".Activity.LoginActivity"
             android:configChanges="uiMode"
@@ -35,38 +37,35 @@
             android:label="@string/login_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".Activity.RegisterActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/Register_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
         <activity
             android:name=".Activity.DashboardActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="Dashboard"
             android:theme="@style/Theme.Fab_Bottom_app_bar" />
+
         <activity
             android:name=".Activity.CashFlowActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="CashFlow"
-<<<<<<< HEAD
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:configChanges="uiMode"/>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
         <activity
             android:name=".Activity.ArusKasActivity"
             android:exported="true"
             android:label="CashFlow"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:configChanges="uiMode"/>
+            android:configChanges="uiMode" />
 
-
-=======
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
->>>>>>> 9b8700dd3ee8de4476689c461db4a1e8153563af
     </application>
 
 </manifest>
