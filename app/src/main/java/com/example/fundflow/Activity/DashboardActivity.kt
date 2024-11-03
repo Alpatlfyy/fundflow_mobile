@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.viewmodel.compose.viewModel
 import android.view.WindowManager
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fundflow.R
 import com.example.fundflow.ViewModel.MainViewModel
@@ -58,6 +59,8 @@ class DashboardActivity : AppCompatActivity() {
 
         // Inisialisasi FAB
         val fab: FloatingActionButton = findViewById(R.id.fab)
+        val invoiceBox = findViewById<LinearLayout>(R.id.anggota)
+
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
@@ -71,6 +74,10 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+
+
+
+
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.home -> {
@@ -79,6 +86,8 @@ class DashboardActivity : AppCompatActivity() {
                 }
                 R.id.activity -> {
                     // Handle arus kas action
+                    val intent = Intent(this, CategoryActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 R.id.report -> {

@@ -60,3 +60,7 @@ class CashFlowActivity : ComponentActivity() {
         binding.view1.adapter = ExpenseListAdapter(mainViewModel.loadData())
     }
 }
+
+
+
+

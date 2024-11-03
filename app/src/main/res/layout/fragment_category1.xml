@@ -1,0 +1,654 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:fadeScrollbars="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Section Entertainment -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Kegiatan"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:paddingBottom="8dp"
+            android:layout_gravity="center"/>
+
+        <!-- Baris 1 Entertainment -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/icon1"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_rapat" />
+
+            <ImageButton
+                android:id="@+id/icon2"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_present" />
+
+            <ImageButton
+                android:id="@+id/icon3"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_proyektor" />
+
+            <ImageButton
+                android:id="@+id/icon4"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_helm" />
+
+            <ImageButton
+                android:id="@+id/icon5"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_kerjsama" />
+        </LinearLayout>
+
+        <!-- Baris 2 Entertainment -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <!-- Tambahkan ikon lainnya untuk Baris 2 Entertainment -->
+            <ImageButton
+                android:id="@+id/icon6"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_daun" />
+
+            <ImageButton
+                android:id="@+id/icon7"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_dokumen" />
+
+            <ImageButton
+                android:id="@+id/icon8"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_kacapembesar" />
+
+            <ImageButton
+                android:id="@+id/icon9"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_catur" />
+
+            <ImageButton
+                android:id="@+id/icon10"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_mic" />
+        </LinearLayout>
+
+        <!-- Baris 3 Entertainment -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/icon11"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_perusahaan" />
+
+            <ImageButton
+                android:id="@+id/icon12"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_rocket" />
+
+            <ImageButton
+                android:id="@+id/icon13"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_lampu" />
+
+            <ImageButton
+                android:id="@+id/icon14"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_book" />
+
+            <ImageButton
+                android:id="@+id/icon15"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_tandatgn" />
+        </LinearLayout>
+        <!-- Baris 4 Entertainment -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/icon16"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_catat" />
+
+            <ImageButton
+                android:id="@+id/icon17"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_pidato" />
+
+            <ImageButton
+                android:id="@+id/icon18"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_bumi" />
+
+            <ImageButton
+                android:id="@+id/icon19"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_medali" />
+
+            <ImageButton
+                android:id="@+id/icon20"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_lingkungan" />
+        </LinearLayout>
+
+
+        <!-- Section Food -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Makanan"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:layout_gravity="center"/>
+
+        <!-- Baris 1 Food -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/icon21"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_mcd" />
+
+            <ImageButton
+                android:id="@+id/icon22"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_kentang" />
+
+            <ImageButton
+                android:id="@+id/icon23"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_ayam" />
+
+            <ImageButton
+                android:id="@+id/icon24"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_rotitawar" />
+
+            <ImageButton
+                android:id="@+id/icon25"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_mie" />
+        </LinearLayout>
+
+        <!-- Baris 2 Food -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <!-- Tambahkan ikon lainnya untuk Baris 2 Food -->
+            <ImageButton
+                android:id="@+id/icon26"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_elur" />
+
+            <ImageButton
+                android:id="@+id/icon27"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_nasi" />
+
+            <ImageButton
+                android:id="@+id/icon28"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_kueultah" />
+
+            <ImageButton
+                android:id="@+id/icon29"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_ikan" />
+
+            <ImageButton
+                android:id="@+id/icon30"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_daging" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/icon31"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_gnja" />
+
+            <ImageButton
+                android:id="@+id/icon32"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_apel" />
+
+            <ImageButton
+                android:id="@+id/icon33"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_teh" />
+
+            <ImageButton
+                android:id="@+id/icon34"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_es" />
+
+            <ImageButton
+                android:id="@+id/icon35"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_kopi" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/icon36"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_botol" />
+
+            <ImageButton
+                android:id="@+id/icon37"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_cup" />
+
+            <ImageButton
+                android:id="@+id/icon38"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_shope" />
+
+            <ImageButton
+                android:id="@+id/icon39"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_gojek" />
+
+            <ImageButton
+                android:id="@+id/icon40"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_grab" />
+        </LinearLayout>
+
+    <!-- Section Kantor -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="kantor"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:layout_gravity="center"/>
+
+    <!-- Baris 1 Kantor -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginBottom="8dp">
+
+        <ImageButton
+            android:id="@+id/icon41"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/ic_flesdis" />
+
+        <ImageButton
+            android:id="@+id/icon42"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/ic_kursi" />
+
+        <ImageButton
+            android:id="@+id/icon43"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/ic_pos" />
+
+        <ImageButton
+            android:id="@+id/icon44"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/ic_komputer" />
+
+        <ImageButton
+            android:id="@+id/icon45"
+            android:layout_width="0dp"
+            android:layout_height="64dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/ic_pin" />
+
+    </LinearLayout>
+        <!-- Baris 2 kantor -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/icon46"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_lembaran" />
+
+            <ImageButton
+                android:id="@+id/icon47"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_kertaspnjg" />
+
+            <ImageButton
+                android:id="@+id/icon48"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_peniti" />
+
+            <ImageButton
+                android:id="@+id/icon49"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_telpun" />
+
+            <ImageButton
+                android:id="@+id/icon50"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_print" />
+
+        </LinearLayout>
+        <!-- Section Kantor -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Transportasi"
+            android:textStyle="bold"
+            android:textColor="#000000"
+            android:textSize="18sp"
+            android:paddingTop="16dp"
+            android:paddingBottom="8dp"
+            android:layout_gravity="center"/>
+
+        <!-- Baris 1 Transportasi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/icon51"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_mobil" />
+
+            <ImageButton
+                android:id="@+id/icon52"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_sepeda" />
+
+            <ImageButton
+                android:id="@+id/icon53"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_bus" />
+
+            <ImageButton
+                android:id="@+id/icon54"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_helykopter" />
+
+            <ImageButton
+                android:id="@+id/icon55"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_truk" />
+
+        </LinearLayout>
+        <!-- Baris 2 transportasi -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginBottom="8dp">
+
+            <ImageButton
+                android:id="@+id/icon56"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_motor" />
+
+            <ImageButton
+                android:id="@+id/icon57"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_kereta" />
+
+            <ImageButton
+                android:id="@+id/icon58"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_kapal" />
+
+            <ImageButton
+                android:id="@+id/icon59"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_jet" />
+
+            <ImageButton
+                android:id="@+id/icon60"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:src="@drawable/ic_pesawat" />
+
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

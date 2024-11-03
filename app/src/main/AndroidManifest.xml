@@ -11,6 +11,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
         tools:targetApi="31">
+
+        <!-- Deklarasi untuk CategoryActivity -->
+        <activity
+            android:name=".Activity.CategoryActivity"
+            android:exported="true"
+            android:label="@string/title_activity_category"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.TambahCategoryActivity"
+            android:exported="true"
+            android:label="@string/title_activity_tambah_category"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+        <!-- Deklarasi aktivitas lainnya -->
         <activity
             android:name=".Activity.AddInvoiceActifity"
             android:exported="false"
@@ -39,7 +53,6 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -68,7 +81,6 @@
             android:exported="true"
             android:label="CashFlow"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-
         <activity
             android:name=".Activity.ArusKasActivity"
             android:exported="true"
