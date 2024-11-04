@@ -273,6 +273,7 @@
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/fitur"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -285,13 +286,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:clickable="true">
 
                 <LinearLayout
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:background="@drawable/rounded_box"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:clickable="true">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -310,11 +313,13 @@
 
             <!-- Kotak Anggota -->
             <LinearLayout
+                android:id="@+id/anggota"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:clickable="true">
 
                 <LinearLayout
                     android:layout_width="70dp"

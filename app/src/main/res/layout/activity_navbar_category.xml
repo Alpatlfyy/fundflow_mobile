@@ -9,7 +9,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="activity_add_cash.xml" />
+        android:text="activity_add_category.xml" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="Arus Kas"
+                    android:text="Kategori"
                     android:textColor="@android:color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
@@ -98,7 +98,7 @@
             android:id="@+id/btnTambahKategori"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tambah"
+            android:text="Tambah Kategori"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
