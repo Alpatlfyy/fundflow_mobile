@@ -24,6 +24,7 @@ class CategoryActivity : AppCompatActivity() {
         binding = ActivityCategorySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
         // Inisialisasi ToolbarS
         setSupportActionBar(binding.toolbar)
 

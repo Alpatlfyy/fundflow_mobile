@@ -201,8 +201,7 @@ fun mainstateAddPiutangActivity() {
     }
 }
 
-// Fungsi Composable untuk InputField dengan label
- // Tambahkan field input sesuai dengan kebutuhan Anda
+
 
 @Composable
 fun InputFieldWithLabel2(label: String) {

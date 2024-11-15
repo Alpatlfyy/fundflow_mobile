@@ -10,7 +10,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-
         tools:targetApi="31">
         <activity
             android:name=".Activity.SupportActivity"
@@ -75,7 +74,6 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -106,9 +104,18 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".Activity.ArusKasActivity"
-            android:configChanges="uiMode"
             android:exported="true"
-            android:label="CashFlow"
+            android:label="arus_kas_title"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.AddNoteActivity"
+            android:exported="true"
+            android:label="add_note_title"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.NoteActivity"
+            android:exported="true"
+            android:label="note_item_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
