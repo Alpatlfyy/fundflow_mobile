@@ -31,16 +31,67 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 
-class InvoiceListActifity : ComponentActivity() {
+
+import androidx.compose.runtime.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
+import java.text.NumberFormat
+import java.util.Locale
+
+class InvoiceListActivity : ComponentActivity() {
+    private lateinit var firestore: FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        firestore = Firebase.firestore
+
+        // Mengambil data dari Firestore dan mengisi invoiceList
         setContent {
+            val invoiceList = remember { mutableStateListOf<Invoice>() }
+
+            // Mengambil data dari Firestore dalam coroutine
+            LaunchedEffect(Unit) {
+                getInvoices { invoices ->
+                    invoiceList.clear()
+                    invoiceList.addAll(invoices)
+                }
+            }
+
             FundflowTheme {
-                mainStateInvoiceListActifity(invoiceList = sampleInvoiceList())
+                mainStateInvoiceListActifity(invoiceList = invoiceList)
             }
         }
     }
+
+    private fun getInvoices(onResult: (List<Invoice>) -> Unit) {
+        // Mengambil data dari Firestore
+        firestore.collection("invoice").get()
+            .addOnSuccessListener { documents ->
+                val invoices = documents.map { document ->
+                    Invoice(
+                        companyName = document.getString("nama perusahaan") ?: "N/A",
+                        date = document.getTimestamp("tanggal invoice")?.toDate()?.toString() ?: "N/A", // Mengambil Timestamp dan mengonversinya ke String
+                        service = (document.get("item") as? List<String>)?.joinToString(", ") ?: "N/A",
+                        amount = formatRupiah(document.getDouble("nominal") ?: 0.0), // Format nominal sebagai "Rp"
+                        status = document.getString("status") ?: "Unknown"
+                    )
+                }
+                onResult(invoices)
+            }
+            .addOnFailureListener { exception ->
+                println("Error getting documents: $exception")
+                onResult(emptyList()) // Kembali dengan daftar kosong jika ada kesalahan
+            }
+
+    }
+
+}
+
+fun formatRupiah(amount: Double): String {
+    val format = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
+    return format.format(amount).replace("Rp", "Rp ")
 }
 
 // Sample data class for invoices
@@ -155,7 +206,7 @@ fun mainStateInvoiceListActifity(invoiceList: List<Invoice>) {
         Button(
             onClick = {
 
-                val intent = Intent(context, AddInvoiceActifity::class.java)
+                val intent = Intent(context, AddInvoiceActivity::class.java)
                 context.startActivity(intent)
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00549C)), // Warna tombol

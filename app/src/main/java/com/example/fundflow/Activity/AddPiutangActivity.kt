@@ -173,7 +173,7 @@ fun mainstateAddPiutangActivity() {
                         "Catatan (Opsional)"
                     )
                 ) { label ->
-                    InputFieldWithLabel(label)
+                    InputFieldWithLabel2(label)
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }
@@ -204,7 +204,53 @@ fun mainstateAddPiutangActivity() {
 // Fungsi Composable untuk InputField dengan label
  // Tambahkan field input sesuai dengan kebutuhan Anda
 
+@Composable
+fun InputFieldWithLabel2(label: String) {
+    val textState = remember { mutableStateOf("") }
 
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 20.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+        ) {
+            Text(
+                text = label,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium,
+                color = Color.Black,
+                modifier = Modifier.padding(bottom = 4.dp)
+            )
+
+            TextField(
+                value = textState.value,
+                onValueChange = { textState.value = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(8.dp)) // Menjaga rounded corners
+                    .height(50.dp)
+                    .background(Color.White) // Latar belakang putih
+                    .border(
+                        BorderStroke(1.dp, Color.Gray), // Menambahkan stroke dengan ketebalan 1dp dan warna abu-abu
+                        shape = RoundedCornerShape(8.dp) // Bentuk rounded corners sesuai background
+                    ),
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    focusedContainerColor = Color.Transparent, // Nonaktifkan background
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
+                )
+            )
+
+        }
+    }
+}
 
 @Preview(showBackground = true)
 @Composable

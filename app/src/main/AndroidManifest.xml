@@ -10,9 +10,33 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"
-        tools:targetApi="31">
 
-        <!-- Deklarasi untuk CategoryActivity -->
+        tools:targetApi="31">
+        <activity
+            android:name=".Activity.SupportActivity"
+            android:exported="false"
+            android:label="@string/title_activity_support"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.AboutApp"
+            android:exported="false"
+            android:label="@string/title_activity_about_app"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.EditPasswordActivity"
+            android:exported="false"
+            android:label="@string/title_activity_edit_password"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.EditDataActivity"
+            android:exported="false"
+            android:label="@string/title_activity_edit_data"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.EditAlamatActivity"
+            android:exported="false"
+            android:label="@string/title_activity_edit_alamat"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" /> <!-- Deklarasi untuk CategoryActivity -->
         <activity
             android:name=".Activity.CategoryActivity"
             android:exported="true"
@@ -22,16 +46,14 @@
             android:name=".Activity.TambahCategoryActivity"
             android:exported="true"
             android:label="@string/title_activity_tambah_category"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-
-        <!-- Deklarasi aktivitas lainnya -->
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" /> <!-- Deklarasi aktivitas lainnya -->
         <activity
-            android:name=".Activity.AddInvoiceActifity"
+            android:name=".Activity.AddInvoiceActivity"
             android:exported="false"
             android:label="@string/title_activity_add_invoice_actifity"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
         <activity
-            android:name=".Activity.InvoiceListActifity"
+            android:name=".Activity.InvoiceListActivity"
             android:exported="false"
             android:label="@string/title_activity_invoice_list_actifity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
@@ -53,6 +75,7 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -83,10 +106,11 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".Activity.ArusKasActivity"
+            android:configChanges="uiMode"
             android:exported="true"
             android:label="CashFlow"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-            android:configChanges="uiMode"/>
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
     </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
 </manifest>

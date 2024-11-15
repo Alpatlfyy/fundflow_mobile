@@ -186,7 +186,7 @@ fun mainstateAddUtangActifity(activity: AppCompatActivity? = null) {
                         "Catatan (Opsional)"
                     )
                 ) { label ->
-                    InputFieldWithLabel(label)
+                    InputFieldWithLabel2(label)
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }

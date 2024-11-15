@@ -17,6 +17,11 @@
     <string name="title_activity_add_invoice_actifity">AddInvoiceActifity</string>
     <string name="title_activity_category">CategoryActivity</string>
     <string name="title_activity_tambah_category">TambahCategoryActivity</string>
+    <string name="title_activity_edit_alamat">EditAlamatActivity</string>
+    <string name="title_activity_edit_data">EditDataActivity</string>
+    <string name="title_activity_edit_password">EditPasswordActivity</string>
+    <string name="title_activity_about_app">AboutApp</string>
+    <string name="title_activity_support">SupportActivity</string>
 
 
 </resources>

@@ -13,19 +13,16 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="ArusKasActivity">
+      <SelectionState runConfigName="reportActivity">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="CategoryActivity">
+      <SelectionState runConfigName="InvoiceListPreview">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="KategoriActivity">
+      <SelectionState runConfigName="GreetingPreview6">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="MainActivity">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
-      <SelectionState runConfigName="TambahCategoryActivity">
+      <SelectionState runConfigName="DefaultPreview3">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
     </selectionStates>

@@ -49,22 +49,47 @@ import com.example.fundflow.R
 import java.util.Calendar
 
 
+import com.google.firebase.firestore.FirebaseFirestore
+import java.text.NumberFormat
+import java.util.Locale
+
 class reportActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Inisialisasi Firestore
+        val db = FirebaseFirestore.getInstance()
+
+        // MutableState untuk menyimpan data yang diambil dari Firestore
+        val dataState = mutableStateOf<Map<String, Int>>(emptyMap())
+
+        // Mengambil data dari Firestore pada koleksi aruskas
+        db.collection("aruskas")
+            .get()
+            .addOnSuccessListener { result ->
+                val dataMap = mutableMapOf<String, Int>()
+                for (document in result) {
+                    // Mengambil kategori dan jumlah dari setiap dokumen
+                    val kategori = document.getString("kategori") ?: "Tidak Ada Kategori"
+                    val jumlah = document.getLong("jumlah")?.toInt() ?: 0
+                    dataMap[kategori] = jumlah
+                }
+                dataState.value = dataMap // Memperbarui data yang ditampilkan pada chart
+            }
+            .addOnFailureListener { exception ->
+                // Log atau tangani error di sini jika diperlukan
+                exception.printStackTrace()
+            }
+
         setContent {
             FundflowTheme {
-                val sampleData = mapOf(
-                    "Category 1" to 40,
-                    "Category 2" to 30,
-                    "Category 3" to 20,
-                    "Category 4" to 10
-                )
-                PieChart(data = sampleData)
+                // Menampilkan data dari Firestore di PieChart
+                PieChart(data = dataState.value)
             }
         }
     }
 }
+
 
 @Composable
 fun PieChart(
@@ -279,7 +304,7 @@ fun PieChart(
 
                     // Teks totalSum dengan warna hex #370665
                     Text(
-                        text = "Rp$totalSum",               // Tampilkan nilai totalSum
+                        text = formatRupiah2(totalSum.toDouble()),
                         fontSize = 30.sp,                 // Ukuran teks
                         color = Color(0xFF370665),        // Warna teks menggunakan kode hex #370665 (ungu gelap)
                         fontWeight = FontWeight.Bold      // Teks tebal untuk nilai total
@@ -297,7 +322,10 @@ fun PieChart(
 }
 
 
-
+fun formatRupiah2(amount: Double): String {
+    val format = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
+    return format.format(amount).replace("Rp", "Rp ")
+}
 
 
 @Composable
@@ -398,7 +426,7 @@ fun DetailsPieChartItem(
                     color = Color.Black
                 )
                 Text(
-                    text = "Rp ${data.second}",
+                    text = formatRupiah2(data.second.toDouble()),
                     fontWeight = FontWeight.Medium,
                     fontSize = 15.sp,
                     color = Color.Gray

@@ -1,8 +1,10 @@
 package com.example.fundflow.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.* // For layout components
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.* // Material3 for UI components
@@ -19,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.zIndex
 import com.example.fundflow.Activity.ui.theme.FundflowTheme
 import com.example.fundflow.R
+
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,6 +112,8 @@ fun ProfileScreen() {
 
 @Composable
 fun ProfileContent() {
+    val context = LocalContext.current
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -146,23 +151,33 @@ fun ProfileContent() {
         Spacer(modifier = Modifier.height(20.dp))
 
         // Add menu items below profile information
-        MenuItem(iconResId = R.drawable.loc_icon, label = "Alamat")
-        MenuItem(iconResId = R.drawable.data_icon, label = "Ubah data pribadi")
-        MenuItem(iconResId = R.drawable.lock_icon, label = "Ubah password")
-        MenuItem(iconResId = R.drawable.inf_icon, label = "Tentang aplikasi")
-        MenuItem(iconResId = R.drawable.sup_icon, label = "Bantuan")
+        MenuItem(iconResId = R.drawable.loc_icon, label = "Alamat") {
+            context.startActivity(Intent(context, EditAlamatActivity::class.java))
+        }
+        MenuItem(iconResId = R.drawable.data_icon, label = "Ubah data pribadi") {
+            context.startActivity(Intent(context, EditDataActivity::class.java))
+        }
+        MenuItem(iconResId = R.drawable.lock_icon, label = "Ubah password") {
+            context.startActivity(Intent(context, EditPasswordActivity::class.java))
+        }
+        MenuItem(iconResId = R.drawable.inf_icon, label = "Tentang aplikasi") {
+            context.startActivity(Intent(context, AboutApp::class.java))
+        }
+        MenuItem(iconResId = R.drawable.sup_icon, label = "Bantuan") {
+            context.startActivity(Intent(context, SupportActivity::class.java))
+        }
     }
 }
 
 @Composable
-fun MenuItem(iconResId: Int, label: String) {
+fun MenuItem(iconResId: Int, label: String, onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 38.dp, vertical = 16.dp),
+            .padding(horizontal = 38.dp, vertical = 16.dp)
+            .clickable { onClick() }, // Tambahkan aksi klik
         verticalAlignment = Alignment.CenterVertically
     ) {
-        // Icon
         Image(
             painter = painterResource(id = iconResId),
             contentDescription = label,
@@ -171,7 +186,6 @@ fun MenuItem(iconResId: Int, label: String) {
 
         Spacer(modifier = Modifier.width(16.dp))
 
-        // Text label
         Text(
             text = label,
             style = MaterialTheme.typography.titleSmall
