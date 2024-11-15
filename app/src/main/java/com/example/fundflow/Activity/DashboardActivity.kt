@@ -61,7 +61,7 @@ class DashboardActivity : AppCompatActivity() {
 
         // Inisialisasi FAB
         val fab: FloatingActionButton = findViewById(R.id.fab)
-        val invoiceBox = findViewById<LinearLayout>(R.id.invoiceBox)
+        val invoiceBox = findViewById<LinearLayout>(R.id.anggota)
 
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)

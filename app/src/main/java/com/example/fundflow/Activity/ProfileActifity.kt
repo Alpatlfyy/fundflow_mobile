@@ -3,6 +3,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.* // For layout components
@@ -178,6 +179,7 @@ fun MenuItem(iconResId: Int, label: String, onClick: () -> Unit) {
             .clickable { onClick() }, // Tambahkan aksi klik
         verticalAlignment = Alignment.CenterVertically
     ) {
+        // Icon
         Image(
             painter = painterResource(id = iconResId),
             contentDescription = label,
@@ -186,6 +188,7 @@ fun MenuItem(iconResId: Int, label: String, onClick: () -> Unit) {
 
         Spacer(modifier = Modifier.width(16.dp))
 
+        // Text label
         Text(
             text = label,
             style = MaterialTheme.typography.titleSmall

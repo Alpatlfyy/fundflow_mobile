@@ -8,6 +8,7 @@
 
     <!-- Circle icon -->
     <ImageView
+        android:id="@+id/iconCategoryImageView"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:src="@drawable/ic_bc_profil"
@@ -16,6 +17,7 @@
 
     <!-- Text untuk nama kategori -->
     <TextView
+        android:id="@+id/categoryNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -26,10 +28,10 @@
 
     <!-- Icon titik tiga untuk combo box -->
     <ImageView
+        android:id="@+id/titik3"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:src="@drawable/ic_titik3"
         android:contentDescription="Combo Box"
-        android:tint="#B0B0B0"
         android:layout_gravity="center_vertical" />
 </LinearLayout>

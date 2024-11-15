@@ -68,7 +68,6 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.firebase.firestore)
-    implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -163,6 +162,18 @@ dependencies {
     implementation ("com.google.android.material:material:1.9.0")
 
     implementation ("androidx.viewpager2:viewpager2:1.1.0")
+
+    implementation ("com.google.firebase:firebase-firestore:24.3.1")
+
+    implementation ("com.google.firebase:firebase-auth:22.0.0")
+    implementation ("com.google.firebase:firebase-firestore:24.6.0")
+
+    implementation ("com.google.android.gms:play-services-auth:20.7.0")
+
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+
+
+
 
     implementation("com.itextpdf:itext7-core:7.2.3")
 

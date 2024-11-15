@@ -90,7 +90,6 @@ class reportActivity : ComponentActivity() {
     }
 }
 
-
 @Composable
 fun PieChart(
     data: Map<String, Int>,

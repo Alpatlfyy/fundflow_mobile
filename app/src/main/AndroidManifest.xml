@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Izin Internet -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -104,6 +107,12 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".Activity.ArusKasActivity"
+            android:exported="true"
+            android:label="CashFlow"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:configChanges="uiMode"/>
+        <activity
+            android:name=".Activity.EditCategoriActivity"
             android:exported="true"
             android:label="arus_kas_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
