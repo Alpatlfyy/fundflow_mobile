@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.benchmark.macro)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.database.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -162,6 +163,9 @@ dependencies {
     implementation ("com.google.android.material:material:1.9.0")
 
     implementation ("androidx.viewpager2:viewpager2:1.1.0")
+
+    implementation ("androidx.cardview:cardview:1.0.0")
+
 
 
 

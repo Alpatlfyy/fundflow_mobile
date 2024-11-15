@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.viewmodel.compose.viewModel
 import android.view.WindowManager
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fundflow.R
@@ -74,9 +76,13 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        val catatan = findViewById<LinearLayout>(R.id.catatan)
 
-
-
+        catatan.setOnClickListener {
+            val intent = Intent(this, NoteActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -101,6 +107,8 @@ class DashboardActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
+
+
                 else -> false
             }
         }
