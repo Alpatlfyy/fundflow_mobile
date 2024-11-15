@@ -71,6 +71,7 @@
 
                 <!-- Profile Icon -->
                 <ImageView
+                    android:id="@+id/iconnKategori"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:layout_marginEnd="8dp"
@@ -85,12 +86,23 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/nameCategory"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="nama kategori"
-                        android:textColor="@color/gray"
+                        android:textColor="#757575"
                         android:textSize="16sp"
                         android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/typeCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="type"
+                        android:textColor="@color/gray"
+                        android:textSize="14sp" />
+
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -130,10 +142,11 @@
 
                 <!-- EditText for Inputting Kategori -->
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/custom_edittext_selector"
                     android:padding="12dp"
                     android:layout_weight="1">
@@ -144,6 +157,7 @@
                         android:layout_height="wrap_content"
                         android:hint="Buat nama kategori"
                         android:textColorHint="@color/gray"
+                        android:textColor="@color/gray"
                         android:background="@android:color/transparent"
                         android:inputType="text" />
                 </LinearLayout>

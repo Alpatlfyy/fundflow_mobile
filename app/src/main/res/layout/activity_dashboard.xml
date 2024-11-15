@@ -17,44 +17,44 @@
         android:layout_marginStart="13dp" />
 
 
-        <!-- Baris dengan ikon profil, teks sapaan, dan ikon notifikasi -->
-        <LinearLayout
-            android:layout_width="match_parent"
+    <!-- Baris dengan ikon profil, teks sapaan, dan ikon notifikasi -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:layout_marginTop="50dp"
+        android:gravity="center_vertical">
+
+        <!-- Foto Profil -->
+        <ImageView
+            android:id="@+id/foto_profile"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_profile"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="Profile Picture"/>
+
+        <!-- Teks sapaan Hai, Payaaw -->
+        <TextView
+            android:id="@+id/sapaan"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="16dp"
-            android:layout_marginTop="50dp"
-            android:gravity="center_vertical">
+            android:layout_weight="1"
+            android:text="Hai, Payaaw"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_marginEnd="180dp"/>
 
-            <!-- Foto Profil -->
-            <ImageView
-                android:id="@+id/foto_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_profile"
-                android:layout_marginEnd="8dp"
-                android:contentDescription="Profile Picture"/>
-
-            <!-- Teks sapaan Hai, Payaaw -->
-            <TextView
-                android:id="@+id/sapaan"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Hai, Payaaw"
-                android:textStyle="bold"
-                android:textSize="16sp"
-                android:textColor="#000000"
-                android:layout_marginEnd="180dp"/>
-
-            <!-- Icon Notifikasi di sebelah kanan -->
-            <ImageView
-                android:id="@+id/icon_notif"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:src="@drawable/ic_notification"
-                android:contentDescription="Notifikasi"/>
-        </LinearLayout>
+        <!-- Icon Notifikasi di sebelah kanan -->
+        <ImageView
+            android:id="@+id/icon_notif"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:src="@drawable/ic_notification"
+            android:contentDescription="Notifikasi"/>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -344,11 +344,13 @@
 
             <!-- Kotak Catatan -->
             <LinearLayout
+                android:id="@+id/catatan"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:clickable="true">
 
                 <LinearLayout
                     android:layout_width="70dp"
@@ -420,28 +422,28 @@
     </LinearLayout>
 
     <com.google.android.material.bottomappbar.BottomAppBar
-    android:id="@+id/bottomAppBar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    app:fabCradleMargin="10dp"
-    app:fabCradleRoundedCornerRadius="10dp"
-    app:fabCradleVerticalOffset="10dp">
-
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
+        android:id="@+id/bottomAppBar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        app:menu="@menu/bottom_nav_menu" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:fabCradleMargin="10dp"
+        app:fabCradleRoundedCornerRadius="10dp"
+        app:fabCradleVerticalOffset="10dp">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            app:menu="@menu/bottom_nav_menu" />
     </com.google.android.material.bottomappbar.BottomAppBar>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/fab"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:src="@drawable/ic_arus_kas"
-    app:backgroundTint="#00549C"
-    app:layout_anchor="@id/bottomAppBar"
-    app:tint="@android:color/white" />
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arus_kas"
+        app:backgroundTint="#00549C"
+        app:layout_anchor="@id/bottomAppBar"
+        app:tint="@android:color/white" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@ package com.example.fundflow.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.* // For layout components
 import androidx.compose.foundation.shape.CircleShape
@@ -20,7 +21,7 @@ import androidx.compose.ui.zIndex
 import com.example.fundflow.Activity.ui.theme.FundflowTheme
 import com.example.fundflow.R
 
-class ProfileActivity : ComponentActivity() {
+class ProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
