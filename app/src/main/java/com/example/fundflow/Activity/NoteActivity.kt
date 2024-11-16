@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import com.example.fundflow.R
 import com.example.fundflow.databinding.ActivityNoteBinding
 import com.example.fundflow.fragment.NoteFragmentRec
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class NoteActivity : AppCompatActivity() {
 
@@ -37,7 +36,7 @@ class NoteActivity : AppCompatActivity() {
 
         // Fungsi FloatingActionButton untuk membuka AddNoteActivity
         binding.tambahkecatatan.setOnClickListener {
-            val intent = Intent(this, AddNoteActivity::class.java)
+            val intent = Intent(this, NoteAddActivity::class.java)
             startActivity(intent)
         }
 

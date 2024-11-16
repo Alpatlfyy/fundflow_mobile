@@ -117,7 +117,7 @@
             android:label="arus_kas_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
-            android:name=".Activity.AddNoteActivity"
+            android:name=".Activity.NoteAddActivity"
             android:exported="true"
             android:label="add_note_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />

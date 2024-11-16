@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.fundflow.R
 import com.google.firebase.firestore.FirebaseFirestore
 
-class AddNoteActivity : AppCompatActivity() {
+class NoteAddActivity : AppCompatActivity() {
 
 
     private lateinit var firestore: FirebaseFirestore

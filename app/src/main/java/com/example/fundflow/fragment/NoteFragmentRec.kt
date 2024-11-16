@@ -11,7 +11,6 @@ import com.example.fundflow.Activity.NoteAdapter
 import com.example.fundflow.model.NoteItem
 import com.example.fundflow.R
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.Query
 
 class NoteFragmentRec : Fragment() {
     private lateinit var recyclerViewNote: RecyclerView
@@ -23,7 +22,7 @@ class NoteFragmentRec : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_recycleview_note, container, false)
+        val view = inflater.inflate(R.layout.note_recycleview_fragment, container, false)
 
         // Initialize RecyclerView
         recyclerViewNote = view.findViewById(R.id.view3)
