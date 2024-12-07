@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Tema utama aplikasi -->
     <style name="Theme.Fundflow" parent="android:Theme.Material.Light.NoActionBar" />
 
+    <!-- Tema Splash Screen -->
     <style name="SplashTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/splash_logo</item>
@@ -13,6 +14,7 @@
         <item name="windowActionBar">false</item>
     </style>
 
+    <!-- Tema Bottom Sheet dengan latar belakang transparan -->
     <style name="BottomSheetTransparant" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="android:windowCloseOnTouchOutside">true</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -24,13 +26,22 @@
         <item name="android:windowIsFloating">true</item>
     </style>
 
+    <!-- Tema FAB Bottom App Bar -->
     <style name="Theme.Fab_Bottom_app_bar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#00549C</item>
         <item name="colorPrimaryVariant">#00549C</item>
         <item name="colorOnPrimary">@color/white</item>
     </style>
 
-    <style name="Theme.MaterialComponents.DayNight.NoActionBar" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Tema DatePickerDialog dengan warna biru -->
+    <style name="BlueDatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/blue_00549C</item>
+        <item name="colorPrimaryVariant">@color/blue_00549C</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorAccent">@color/blue_00549C</item>
+    </style>
 
+    <!-- Tema Material DayNight -->
+    <style name="Theme.MaterialComponents.DayNight.NoActionBar" parent="android:Theme.Material.Light.NoActionBar" />
 
 </resources>

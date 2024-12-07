@@ -39,31 +39,15 @@
                 android:textColor="@android:color/darker_gray"
                 android:textSize="14sp" />
 
-            <!-- Edit and Delete Icons -->
-            <LinearLayout
+            <!-- Delete Icon -->
+            <ImageButton
+                android:id="@+id/delete"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/edit"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_editnote"
-                    android:contentDescription="Edit Note" />
-
-                <ImageButton
-                    android:id="@+id/delete"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/ic_deletenote"
-                    android:contentDescription="Delete Note" />
-
-            </LinearLayout>
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_deletenote"
+                android:contentDescription="Delete Note" />
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
-
 </RelativeLayout>

@@ -1,0 +1,71 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardElevation="4dp"
+    app:cardCornerRadius="12dp"
+    android:background="#FFFFFFFF"
+    app:cardBackgroundColor="#FFFFFFFF">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Icon Background -->
+        <LinearLayout
+            android:id="@+id/layout"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_people"
+            android:gravity="center"
+            android:layout_alignParentStart="true">
+
+            <!-- Icon Statis -->
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_people2" />
+        </LinearLayout>
+
+        <!-- Nama dan Jabatan -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/layout"
+            android:layout_marginStart="16dp"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/nama"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Muzaka Najih"
+                android:textColor="#000000"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/jabatan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manager"
+                android:textColor="#4CAF50"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Tombol Hapus -->
+        <ImageButton
+            android:id="@+id/btnDelet"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="4dp"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_hapus" />
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>

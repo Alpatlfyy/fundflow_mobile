@@ -6,13 +6,12 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.fundflow.R
-import com.example.fundflow.databinding.ActivityNoteBinding
+import com.example.fundflow.databinding.NoteActivityBinding
 import com.example.fundflow.fragment.NoteFragmentRec
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class NoteActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityNoteBinding
+    private lateinit var binding: NoteActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +22,7 @@ class NoteActivity : AppCompatActivity() {
         }
 
         // Inisialisasi binding
-        binding = ActivityNoteBinding.inflate(layoutInflater)
+        binding = NoteActivityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Mengatur toolbar
@@ -32,12 +31,16 @@ class NoteActivity : AppCompatActivity() {
 
         // Fungsi Tombol Kembali
         binding.btnnBack.setOnClickListener {
-            finish()  // Menutup aktivitas saat tombol kembali ditekan
+            val intent = Intent(this, DashboardActivity::class.java)
+            startActivity(intent)  // Beralih ke DashboardActivity
+            finish()  // Menutup NoteActivity agar tidak kembali ke halaman ini
         }
+
+
 
         // Fungsi FloatingActionButton untuk membuka AddNoteActivity
         binding.tambahkecatatan.setOnClickListener {
-            val intent = Intent(this, AddNoteActivity::class.java)
+            val intent = Intent(this, NoteAddActivity::class.java)
             startActivity(intent)
         }
 

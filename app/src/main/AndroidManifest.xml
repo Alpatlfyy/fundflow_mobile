@@ -117,7 +117,7 @@
             android:label="arus_kas_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
-            android:name=".Activity.AddNoteActivity"
+            android:name=".Activity.NoteAddActivity"
             android:exported="true"
             android:label="add_note_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
@@ -126,6 +126,33 @@
             android:exported="true"
             android:label="note_item_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.NoteEdit"
+            android:exported="true"
+            android:label="note_item_title"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.AnggotaActivity"
+            android:exported="true"
+            android:label="anggota_item_title"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.AnggotaAddActivity"
+            android:exported="true"
+            android:label="anggota_item_title"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.AnggotaEdit"
+            android:exported="true"
+            android:label="anggota_item_title"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.ResetPassword"
+            android:exported="true"
+            android:label="login_item_title"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+
+
     </application>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 

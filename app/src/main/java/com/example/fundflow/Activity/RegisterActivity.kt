@@ -4,50 +4,64 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.Spinner
-import android.widget.TextView
+import android.widget.*
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.fundflow.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class RegisterActivity : ComponentActivity() {
+
+    private lateinit var firestore: FirebaseFirestore
+    private lateinit var firebaseAuth: FirebaseAuth
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(R.layout.activity_register)
 
-        // Inisialisasi Spinner dan Icon
+        // Inisialisasi Firestore dan FirebaseAuth
+        firestore = FirebaseFirestore.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        // Inisialisasi komponen
         val userRoleSpinner = findViewById<Spinner>(R.id.userRoleSpinner)
         val dropdownIcon = findViewById<ImageView>(R.id.dropdownIcon)
-        val MasukText = findViewById<TextView>(R.id.MasukText)
+        val masukText = findViewById<TextView>(R.id.MasukText)
+        val registerButton = findViewById<Button>(R.id.loginButton)
 
-        // Buat adapter menggunakan layout custom spinner_item
+        // Atur adapter untuk Spinner
+        setupSpinner(userRoleSpinner, dropdownIcon)
+
+        // Navigasi ke halaman login saat teks "Masuk" diklik
+        masukText.setOnClickListener {
+            navigateToMainActivity(2)
+        }
+
+        // Tombol daftar
+        registerButton.setOnClickListener {
+            performRegistration()
+        }
+    }
+
+    // Fungsi untuk mengatur Spinner dan ikonnya
+    private fun setupSpinner(spinner: Spinner, icon: ImageView) {
         val adapter = ArrayAdapter.createFromResource(
             this,
             R.array.user_roles,
             R.layout.spinner_item_with_icon
         )
-
-        // Set layout untuk dropdown saat dibuka (pop-up)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
 
-        // Pasang adapter ke Spinner
-        userRoleSpinner.adapter = adapter
-
-        // Fungsi untuk membuka Spinner ketika icon diklik
-        dropdownIcon.setOnClickListener {
-            userRoleSpinner.performClick() // Membuka spinner
+        icon.setOnClickListener {
+            spinner.performClick()
         }
 
-        // Listener untuk menangani pemilihan item
-        userRoleSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View?,
@@ -55,45 +69,69 @@ class RegisterActivity : ComponentActivity() {
                 id: Long
             ) {
                 val selectedRole = parent.getItemAtPosition(position).toString()
-                // Anda bisa melakukan sesuatu dengan selectedRole di sini
+                Toast.makeText(this@RegisterActivity, "Role: $selectedRole", Toast.LENGTH_SHORT).show()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
-                // Do nothing
+                // Kosongkan jika tidak ada yang dipilih
             }
-        }
-
-        // Setup focus change untuk EditText
-        setupEditTextFocusChange(R.id.nameLayout, R.id.nameEditText)
-        setupEditTextFocusChange(R.id.usernameLayout2, R.id.usernameEditText3)
-        setupEditTextFocusChange(R.id.usernameLayout3, R.id.usernameEditText4)
-        setupEditTextFocusChange(R.id.usernameLayout6, R.id.usernameEditText6)
-
-
-        MasukText.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("INITIAL_PAGE", 2) // Mengirimkan halaman ketiga (index 2)
-            startActivity(intent)
         }
     }
 
+    // Navigasi ke MainActivity
+    private fun navigateToMainActivity(initialPage: Int) {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("INITIAL_PAGE", initialPage)
+        startActivity(intent)
+    }
 
-    private fun setupEditTextFocusChange(layoutId: Int, editTextId: Int) {
-        val layout = findViewById<LinearLayout>(layoutId)
-        val editText = findViewById<EditText>(editTextId)
+    // Fungsi untuk memproses registrasi
+    private fun performRegistration() {
+        // Ambil input dari EditText
+        val name = findViewById<EditText>(R.id.nameEditText).text.toString().trim()
+        val username = findViewById<EditText>(R.id.usernameEditText3).text.toString().trim()
+        val email = findViewById<EditText>(R.id.usernameEditText4).text.toString().trim()
+        val password = findViewById<EditText>(R.id.usernameEditText6).text.toString().trim()
+        val userRole = findViewById<Spinner>(R.id.userRoleSpinner).selectedItem.toString()
 
-        // Listener untuk mengubah background ketika layout di klik
-        layout.setOnClickListener {
-            editText.requestFocus()
-            layout.setBackgroundResource(R.drawable.custom_edittext_focused)
+        // Validasi input
+        if (name.isBlank() || username.isBlank() || email.isBlank() || password.isBlank()) {
+            Toast.makeText(this, "Semua bidang harus diisi!", Toast.LENGTH_SHORT).show()
+            return
         }
 
-        editText.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                layout.setBackgroundResource(R.drawable.custom_edittext_focused)
-            } else {
-                layout.setBackgroundResource(R.drawable.custom_edittext_selector)
+        // Cek format email
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            Toast.makeText(this, "Email tidak valid!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // Proses pendaftaran dengan Firebase Authentication
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Jika berhasil, simpan data ke Firestore
+                    val userData = hashMapOf(
+                        "name" to name,
+                        "username" to username,
+                        "email" to email,
+                        "role" to userRole
+                    )
+
+                    firestore.collection("register")
+                        .document(task.result?.user?.uid ?: "")
+                        .set(userData)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Pendaftaran berhasil!", Toast.LENGTH_SHORT).show()
+                            navigateToMainActivity(2) // Navigasi ke halaman login
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Gagal menyimpan data: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    // Jika gagal, tampilkan pesan kesalahan
+                    Toast.makeText(this, "Pendaftaran gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
             }
-        }
     }
 }

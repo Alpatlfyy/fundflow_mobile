@@ -81,6 +81,13 @@ class DashboardActivity : AppCompatActivity() {
             val intent = Intent(this, InvoiceListActivity::class.java)
             startActivity(intent)
         }
+        val anggota = findViewById<LinearLayout>(R.id.anggota)
+
+        anggota.setOnClickListener {
+            val intent = Intent(this, AnggotaActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
         val catatan = findViewById<LinearLayout>(R.id.catatan)
 
         catatan.setOnClickListener {

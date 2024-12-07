@@ -1,0 +1,112 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="#F6F6F6">
+
+    <!-- Header Bar -->
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_00549C"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <ImageButton
+                android:id="@+id/btnkembali"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_back_arrow"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                app:tint="@android:color/white"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Edit Catatan"
+                android:textColor="@android:color/white"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/poppins_medium" />
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <!-- Form Section -->
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Title Text "Tambahkan Catatan" with Save Button -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:id="@+id/add_note_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:paddingTop="8dp"
+                android:text="Tambahkan Catatan"
+                android:textColor="@color/blue_00549C"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Save Button -->
+            <ImageButton
+                android:id="@+id/tambahCatatan"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:contentDescription="Save Note"
+                android:padding="8dp"
+                android:src="@drawable/ic_save" />
+        </RelativeLayout>
+
+        <!-- Note Title Input -->
+        <EditText
+            android:id="@+id/note_title"
+            android:layout_width="match_parent"
+            android:layout_height="51dp"
+            android:background="@drawable/custom_edittext_selector"
+            android:hint="Tambahkan Judul"
+            android:padding="10dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <!-- Kotak Pencarian Kategori -->
+        <EditText
+            android:id="@+id/note_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/custom_edittext_selector"
+            android:gravity="top|start"
+            android:hint="Mulai mengetik"
+            android:padding="12dp"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+</RelativeLayout>
