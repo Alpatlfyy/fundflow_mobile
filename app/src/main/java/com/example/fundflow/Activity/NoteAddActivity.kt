@@ -11,16 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.fundflow.R
 import com.google.firebase.firestore.FirebaseFirestore
 
-class AddNoteActivity : AppCompatActivity() {
-
+class NoteAddActivity : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_addnote)
-
+        setContentView(R.layout.noteadd_activity)
 
         firestore = FirebaseFirestore.getInstance()
 
@@ -28,6 +26,7 @@ class AddNoteActivity : AppCompatActivity() {
         backButton.setOnClickListener {
             val intent = Intent(this, NoteActivity::class.java)
             intent.putExtra("NAVIGATION_TARGET", "note")
+            setResult(RESULT_OK) // Notify that a note was added
             startActivity(intent)
             finish()
         }
@@ -49,7 +48,6 @@ class AddNoteActivity : AppCompatActivity() {
         if (titleText.isBlank() || contentText.isBlank()) {
             Toast.makeText(this, "Judul atau isi catatan tidak boleh kosong!", Toast.LENGTH_SHORT).show()
         } else {
-
             saveNoteToDatabase(titleText, contentText)
         }
     }
@@ -66,8 +64,14 @@ class AddNoteActivity : AppCompatActivity() {
             .addOnSuccessListener {
                 Toast.makeText(this, "Catatan berhasil disimpan", Toast.LENGTH_SHORT).show()
 
+                // Clear form after saving
                 findViewById<EditText>(R.id.note_title).text.clear()
                 findViewById<EditText>(R.id.note_content).text.clear()
+
+                // Set result to notify that new data has been added
+                val intent = Intent()
+                setResult(RESULT_OK, intent) // Notifies that the note was added
+                finish() // Finish activity and return to the previous screen
             }
             .addOnFailureListener { e ->
                 Toast.makeText(this, "Gagal menyimpan catatan: ${e.message}", Toast.LENGTH_SHORT).show()

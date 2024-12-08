@@ -172,15 +172,15 @@ dependencies {
 
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
 
-
-
-
     implementation("com.itextpdf:itext7-core:7.2.3")
 
     implementation ("androidx.cardview:cardview:1.0.0")
 
 
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1") // Atau versi terbaru
+
+
+
 
 
 }
