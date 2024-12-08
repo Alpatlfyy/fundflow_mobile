@@ -14,6 +14,7 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fundflow.R
 import com.example.fundflow.ViewModel.MainViewModel
@@ -61,13 +62,22 @@ class DashboardActivity : AppCompatActivity() {
 
         // Inisialisasi FAB
         val fab: FloatingActionButton = findViewById(R.id.fab)
-        val invoiceBox = findViewById<LinearLayout>(R.id.anggota)
-
+        val invoiceBox = findViewById<LinearLayout>(R.id.invoiceBox)
+        val catatan = findViewById<LinearLayout>(R.id.catatan)
+        val LihatSemua = findViewById<TextView>(R.id.lihat_semua)
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
 
         bottomNavigationView.background = null
         bottomNavigationView.menu.getItem(2).isEnabled = false
+
+        LihatSemua.setOnClickListener {
+            // Navigasi ke CashflowActivity
+            val intent = Intent(this, UtangActivity::class.java)
+            startActivity(intent)
+        }
+
+
 
         // Set onClickListener untuk FAB
         fab.setOnClickListener {
@@ -81,7 +91,7 @@ class DashboardActivity : AppCompatActivity() {
             val intent = Intent(this, InvoiceListActivity::class.java)
             startActivity(intent)
         }
-        val catatan = findViewById<LinearLayout>(R.id.catatan)
+
 
         catatan.setOnClickListener {
             val intent = Intent(this, NoteActivity::class.java)

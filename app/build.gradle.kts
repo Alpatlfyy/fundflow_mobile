@@ -138,7 +138,7 @@ dependencies {
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.0") // Lifecycle
 
     // Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.0")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.9.0")
 
     // Untuk menggunakan Lottie
     implementation ("com.airbnb.android:lottie-compose:4.2.2")
@@ -180,6 +180,7 @@ dependencies {
     implementation ("androidx.cardview:cardview:1.0.0")
 
 
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1") // Atau versi terbaru
 
 
 }

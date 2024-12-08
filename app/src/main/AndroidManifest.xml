@@ -100,6 +100,30 @@
             android:label="Dashboard"
             android:theme="@style/Theme.MaterialComponents.DayNight" />
         <activity
+            android:name=".Activity.UtangActivity"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="Utang"
+            android:theme="@style/Theme.MaterialComponents.DayNight" />
+        <activity
+            android:name=".Activity.PiutangActivity"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="Piutang"
+            android:theme="@style/Theme.MaterialComponents.DayNight" />
+        <activity
+            android:name=".Activity.AddPiutangActivity"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="AddPiutang"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar"/>
+        <activity
+            android:name=".Activity.AddUtangActivity"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="AddUtang"
+            android:theme="@style/Theme.MaterialComponents.DayNight" />
+        <activity
             android:name=".Activity.CashFlowActivity"
             android:configChanges="uiMode"
             android:exported="true"

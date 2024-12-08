@@ -14,6 +14,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -45,12 +46,15 @@ import com.example.fundflow.Activity.ui.theme.Purple500
 import com.example.fundflow.Activity.ui.theme.Purple700
 import com.example.fundflow.Activity.ui.theme.Teal200
 import com.example.fundflow.R
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.Query
 
 import java.util.Calendar
 
 
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.Locale
 
 class reportActivity : ComponentActivity() {
@@ -63,71 +67,120 @@ class reportActivity : ComponentActivity() {
         // MutableState untuk menyimpan data yang diambil dari Firestore
         val dataState = mutableStateOf<Map<String, Int>>(emptyMap())
 
-        // Mengambil data dari Firestore pada koleksi aruskas
-        db.collection("aruskas")
-            .get()
-            .addOnSuccessListener { result ->
-                val dataMap = mutableMapOf<String, Int>()
-                for (document in result) {
-                    // Mengambil kategori dan jumlah dari setiap dokumen
-                    val kategori = document.getString("kategori") ?: "Tidak Ada Kategori"
-                    val jumlah = document.getLong("jumlah")?.toInt() ?: 0
-                    dataMap[kategori] = jumlah
+        // Fungsi untuk mengambil data berdasarkan tanggal atau semua data
+        fun fetchData(selectedDate: String? = null) {
+            var query: Query = db.collection("aruskas")
+
+            // Jika tanggal dipilih, tambahkan filter
+            if (selectedDate != null) {
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val date = sdf.parse(selectedDate)
+
+                val calendar = Calendar.getInstance()
+                calendar.time = date!!
+
+                // Set waktu ke awal hari
+                calendar.set(Calendar.HOUR_OF_DAY, 0)
+                calendar.set(Calendar.MINUTE, 0)
+                calendar.set(Calendar.SECOND, 0)
+                calendar.set(Calendar.MILLISECOND, 0)
+                val startOfDay = Timestamp(calendar.time)
+
+                // Set waktu ke akhir hari
+                calendar.set(Calendar.HOUR_OF_DAY, 23)
+                calendar.set(Calendar.MINUTE, 59)
+                calendar.set(Calendar.SECOND, 59)
+                calendar.set(Calendar.MILLISECOND, 999)
+                val endOfDay = Timestamp(calendar.time)
+
+                // Filter dengan rentang waktu
+                query = query
+                    .whereGreaterThanOrEqualTo("tanggal", startOfDay)
+                    .whereLessThanOrEqualTo("tanggal", endOfDay)
+            }
+
+            // Eksekusi query
+            query.get()
+                .addOnSuccessListener { result ->
+                    val dataMap = mutableMapOf<String, Int>()
+                    for (document in result) {
+                        val kategori = document.getString("kategori") ?: "Tidak Ada Kategori"
+                        val jumlah = document.getLong("jumlah")?.toInt() ?: 0
+
+                        // Menambahkan jumlah ke kategori yang sama
+                        dataMap[kategori] = dataMap.getOrDefault(kategori, 0) + jumlah
+                    }
+                    dataState.value = dataMap
+                    println("Hasil: $dataMap")
                 }
-                dataState.value = dataMap // Memperbarui data yang ditampilkan pada chart
-            }
-            .addOnFailureListener { exception ->
-                // Log atau tangani error di sini jika diperlukan
-                exception.printStackTrace()
-            }
+                .addOnFailureListener { exception ->
+                    exception.printStackTrace()
+                }
+        }
+
+        // Ambil semua data saat pertama kali dibuka
+        fetchData()
 
         setContent {
             FundflowTheme {
-                // Menampilkan data dari Firestore di PieChart
-                PieChart(data = dataState.value)
+                // State untuk tanggal yang dipilih (nullable)
+                var selectedDate by remember { mutableStateOf<String?>(null) }
+
+                // Komposabel utama
+                PieChart(
+                    data = dataState.value,
+                    onDateSelected = { newDate ->
+                        selectedDate = newDate
+                        fetchData(newDate)
+                    },
+                    onClearDate = {
+                        selectedDate = null
+                        fetchData() // Ambil semua data
+                    }
+                )
             }
         }
     }
 }
-
 @Composable
 fun PieChart(
     data: Map<String, Int>,
     radiusOuter: Dp = 120.dp,
     chartBarWidth: Dp = 16.dp,
     animDuration: Int = 1000,
-    spaceBetween: Float = 12f
+    spaceBetween: Float = 12f,
+    onDateSelected: (String) -> Unit,
+    onClearDate: () -> Unit
 ) {
-    // State untuk menyimpan tanggal yang dipilih
     val calendar = Calendar.getInstance()
     val year = calendar.get(Calendar.YEAR)
     val month = calendar.get(Calendar.MONTH)
     val day = calendar.get(Calendar.DAY_OF_MONTH)
     val context = LocalContext.current
 
-
-    // State untuk mengontrol kapan DatePicker ditampilkan
     var showDatePicker by remember { mutableStateOf(false) }
-
-    // Tanggal yang dipilih
-    var selectedDate by remember { mutableStateOf("$day/${month + 1}/$year") }
+    var selectedDate by remember { mutableStateOf<String?>(null) }
 
     // Fungsi untuk menampilkan DatePickerDialog
     if (showDatePicker) {
         val datePickerDialog = DatePickerDialog(
             LocalContext.current,
             { _: DatePicker, selectedYear: Int, selectedMonth: Int, selectedDay: Int ->
-                selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
-                showDatePicker = false // Reset state setelah memilih tanggal
+                val newDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                selectedDate = newDate
+                onDateSelected(newDate) // Panggil callback dengan tanggal baru
+                showDatePicker = false
             }, year, month, day
         )
 
-        // Tambahkan listener untuk menangani kondisi ketika dialog dibatalkan
         datePickerDialog.setOnCancelListener {
-            showDatePicker = false // Reset state jika dialog dibatalkan
+            showDatePicker = false
+
+            // Secara default, panggil onClearDate ketika dialog dibatalkan
+            selectedDate = null
+            onClearDate()
         }
 
-        // Tampilkan DatePickerDialog
         datePickerDialog.show()
     }
 
@@ -190,7 +243,7 @@ fun PieChart(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()  // Agar Row mengisi lebar penuh
-                    .padding(top = 18.dp), // Padding sesuai kebutuhan
+                    .padding(top = 1.dp), // Padding sesuai kebutuhan
                 verticalAlignment = Alignment.CenterVertically // Konten sejajar secara vertikal
             ) {
                 // Ikon di posisi start
@@ -254,9 +307,12 @@ fun PieChart(
                         .size(150.dp)
                         .align(Alignment.CenterVertically)
                         .padding(end = 30.dp, top = 10.dp)
-                        .clickable {
+                        .clickable(
+                            indication = null, // Hilangkan efek ripple
+                            interactionSource = remember { MutableInteractionSource() } // Hilangkan interaksi
+                        ) {
                             showDatePicker = true // Ketika tombol diklik, tampilkan DatePicker
-                        }
+                        },
                 )
             }
 
@@ -439,14 +495,14 @@ fun DetailsPieChartItem(
 @Preview(showBackground = true, widthDp = 400, heightDp = 400)
 @Composable
 fun ChartPreview() {
-    FundflowTheme {
-        val sampleData = mapOf(
-            "Category 1" to 40,
-            "Category 2" to 30,
-            "Category 3" to 20,
-            "Category 4" to 10
-        )
-        PieChart(data = sampleData)
-    }
+//    FundflowTheme {
+//        val sampleData = mapOf(
+//            "Category 1" to 40,
+//            "Category 2" to 30,
+//            "Category 3" to 20,
+//            "Category 4" to 10
+//        )
+//        PieChart(data = sampleData)
+//    }
 }
 

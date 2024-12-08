@@ -409,7 +409,9 @@
                 android:fontFamily="@font/poppins_medium"
                 android:text="Lihat semua"
                 android:textColor="#0F78CB"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:clickable="true"/>
+
         </LinearLayout>
 
         <!-- RecyclerView untuk aktivitas -->

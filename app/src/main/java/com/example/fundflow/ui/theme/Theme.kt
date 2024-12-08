@@ -10,6 +10,8 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
@@ -151,32 +153,37 @@ private val LightColorScheme = lightColorScheme(
 
 @Composable
 fun FundflowTheme(
-    darkTheme: Boolean = false, // Paksa untuk selalu menggunakan mode light
+    darkTheme: Boolean = false,
     dynamicColor: Boolean = true,
+    statusBarColor: Color = Color.White,
+    lightStatusBarIcons: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val context = LocalContext.current
     val activity = context as Activity
 
-    // Tentukan color scheme
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            dynamicLightColorScheme(context) // Selalu gunakan dynamic light color scheme
+    val colorScheme = remember(darkTheme, dynamicColor) {
+        if (dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            dynamicLightColorScheme(context)
+        } else {
+            LightColorScheme
         }
-        else -> LightColorScheme
     }
 
-    // Update warna status bar
-    activity.window.statusBarColor = Color.White.toArgb() // Selalu putih untuk mode light
+    // Update status bar
+    SideEffect {
+        activity.window.statusBarColor = statusBarColor.toArgb()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
+            windowInsetsController?.isAppearanceLightStatusBars = lightStatusBarIcons
+        }
+    }
 
-    // Kontrol tampilan ikon di status bar
-    val windowInsetsController = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
-    windowInsetsController?.isAppearanceLightStatusBars = true // Ikon status bar tetap gelap di mode light
-
-    // Terapkan MaterialTheme
+    // Apply theme
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = AppTypography, // Ganti dengan typography yang sudah dimodifikasi
+        typography = AppTypography,
         content = content
     )
 }
+

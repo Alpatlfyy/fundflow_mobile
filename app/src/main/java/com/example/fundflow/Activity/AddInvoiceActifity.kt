@@ -28,7 +28,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -41,7 +40,10 @@ import com.example.fundflow.R
 import com.google.firebase.firestore.FirebaseFirestore
 
 import android.graphics.Bitmap
-import android.graphics.Canvas
+import android.graphics.Color.BLACK
+import android.graphics.Color.RED
+import android.graphics.Color.WHITE
+import android.graphics.Color.rgb
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.os.Environment
@@ -49,18 +51,17 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import android.widget.Toast
-import androidx.compose.material.icons.Icons
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FieldValue
 import java.util.Calendar
 
 
 class AddInvoiceActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
         setContent {
             FundflowTheme {
                 mainStateAddInvoiceActivity(this)
@@ -80,9 +81,18 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
     val customerNameState = remember { mutableStateOf("") }
     val customerAddressState = remember { mutableStateOf("") }
     val taxAmountState = remember { mutableStateOf("") }
-    val itemsState = remember { mutableStateOf(listOf<String>()) }
+    val itemsState = remember { mutableStateListOf<Pair<String, String>>() }
     val selectedStatusState = remember { mutableStateOf("Lunas") }
     var logoBitmap by remember { mutableStateOf<Bitmap?>(null) }
+    val catatanstate = remember { mutableStateOf("")}
+    val selectedDateState = remember { mutableStateOf<Timestamp?>(null) }
+    val selectedTempoState = remember { mutableStateOf<Timestamp?>(null) }
+    val nominalstate = remember { mutableStateOf(0L) }
+
+
+
+    // State untuk tanggal
+
 
     // Inisialisasi launcher untuk mendapatkan gambar dari galeri
     val launcher = rememberLauncherForActivityResult(
@@ -113,7 +123,7 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 18.dp)
+                    .padding(top = 1.dp)
                     .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -181,7 +191,7 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
                     Spacer(modifier = Modifier.height(20.dp))
                 }
 
-                items(listOf("Nama Perusahaan", "Alamat Perusahaan", "Nomor Invoice", "Nama Pelanggan", "Alamat Pelanggan", "Pajak")) { label ->
+                items(listOf("Nama Perusahaan", "Alamat Perusahaan", "Nomor Invoice", "Nama Pelanggan", "Alamat Pelanggan", "Pajak","Catatan")) { label ->
                     val textState = when (label) {
                         "Nama Perusahaan" -> companyNameState
                         "Alamat Perusahaan" -> companyAddressState
@@ -190,6 +200,7 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
                         "Nama Pelanggan" -> customerNameState
                         "Alamat Pelanggan" -> customerAddressState
                         "Pajak" -> taxAmountState
+                        "Catatan" -> catatanstate
                         else -> remember { mutableStateOf("") }
                     }
 
@@ -200,11 +211,27 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
                 // Tambahkan tabel di bawah alamat pelanggan
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
-                    ItemTable(context)
+                    ItemTable(
+                        context = context,
+                        items = itemsState,
+                        nominal = nominalstate // Mengirimkan nominal yang terupdate
+                    )
                 }
 
                 item {
-                    DatePickerButton()                }
+                    DatePickerButton(
+                        selectedDate = selectedDateState,
+                        label = "Tanggal Invoice"
+                    )
+                }
+
+                // DatePicker untuk tanggal jatuh tempo
+                item {
+                    DatePickerButton(
+                        selectedDate = selectedTempoState,
+                        label = "Tanggal Jatuh Tempo"
+                    )
+                }
 
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
@@ -217,7 +244,77 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
                 // Menambahkan ActionButtons di dalam LazyColumn
                 item {
                     Spacer(modifier = Modifier.height(16.dp))
-                    ActionButtons()
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    ) {
+                        // Tombol Simpan
+                        Button(
+                            onClick = {
+
+
+                                saveInvoiceToFirestore(
+                                    alamatPelanggan = customerAddressState.value,
+                                    alamatPerusahaan = companyAddressState.value,
+                                    catatan = catatanstate.value, // Sesuaikan jika ada input field catatan
+                                    item = itemsState.toList(), // Hanya mengambil nama item
+                                    jatuhTempo = selectedTempoState.value?: Timestamp.now(), // Menggunakan Timestamp yang benar
+                                    namaPelanggan = customerNameState.value,
+                                    namaPerusahaan = companyNameState.value,
+                                    nominal = nominalstate.value, // Menggunakan Long
+                                    nomorInvoice = invoiceNumberState.value,
+                                    status = selectedStatusState.value, // Menggunakan status terpilih
+                                    tanggalInvoice = selectedDateState.value?: Timestamp.now() // Menggunakan Timestamp yang benar
+                                )
+
+                                generateInvoicePdf(
+                                    context = context,
+                                    logoBitmap = logoBitmap, // Menggunakan logoBitmap yang sudah di-assign
+                                    companyName = companyNameState.value,
+                                    companyAddress = companyAddressState.value,
+                                    invoiceNumber = invoiceNumberState.value,
+                                    invoiceDate = invoiceDateState.value,
+                                    customerName = customerNameState.value,
+                                    customerAddress = customerAddressState.value,
+                                    taxAmount = taxAmountState.value,
+                                    items = itemsState.toList(), // Menggunakan itemsState yang berisi daftar item
+                                    selectedStatus = selectedStatusState.value
+                                )
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00549C)),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        ) {
+                            Text(
+                                text = "Simpan",
+                                color = Color.White,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // Tombol Bagikan
+                        Button(
+                            onClick = {
+                                // Tambahkan aksi untuk tombol bagikan
+                            },
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7DFFB1)),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(50.dp)
+                        ) {
+                            Text(
+                                text = "Bagikan",
+                                color = Color.Black,
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
+                    }
                     Spacer(modifier = Modifier.height(16.dp)) // Memberikan jarak setelah tombol
                 }
             }
@@ -225,55 +322,25 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
     }
 }
 
-@Composable
-fun DatePickerButton() {
-    val context = LocalContext.current
-    val selectedDate = remember { mutableStateOf("") }
 
-    // Fungsi untuk menampilkan DatePickerDialog
-    fun showDatePickerDialog() {
-        val calendar = Calendar.getInstance()
-        val datePickerDialog = android.app.DatePickerDialog(
-            context,
-            { _, year, month, dayOfMonth ->
-                // Mengupdate nilai state dengan tanggal yang dipilih
-                val formattedDate = "${dayOfMonth}/${month + 1}/$year"
-                selectedDate.value = formattedDate
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
-        datePickerDialog.show()
-    }
 
-    // Button yang menampilkan ikon dan membuka DatePicker saat diklik
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(
-            text = "Tanggal Invoice: ${selectedDate.value}",
-            fontSize = 16.sp,
-            color = Color.Black,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
-
-        IconButton(onClick = { showDatePickerDialog() }) {
-            Icon(
-                painter = painterResource(id = R.drawable.tanggal_btn),  // Menggunakan drawable tanggal_btn
-                contentDescription = "Pilih Tanggal"
-            )
-        }
-    }
-}
 
 
 
 
 
 @Composable
-fun ItemTable(context: Context) {
-    val items = remember { mutableStateListOf<Pair<String, String>>() }
-    var showPopup by remember { mutableStateOf(false) } // State untuk mengontrol visibilitas popup
+fun ItemTable(
+    context: Context,
+    items: MutableList<Pair<String, String>>,
+    nominal: MutableState<Long> // Menerima nominal sebagai MutableState<Long>
+) {
+    var showPopup by remember { mutableStateOf(false) }
 
+    // Menghitung nominal berdasarkan harga setiap item
+    nominal.value = items.sumOf {
+        it.second.toLongOrNull() ?: 0L
+    }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -363,11 +430,13 @@ fun ItemTable(context: Context) {
     }
 }
 
+
+
 fun saveInvoiceToFirestore(
     alamatPelanggan: String,
     alamatPerusahaan: String,
     catatan: String,
-    item: List<String>,
+    item: List<Pair<String, String>>,
     jatuhTempo: Timestamp,
     namaPelanggan: String,
     namaPerusahaan: String,
@@ -400,112 +469,53 @@ fun saveInvoiceToFirestore(
         }
 }
 
-
 @Composable
-fun ActionButtons() {
-    val db = FirebaseFirestore.getInstance()
+fun DatePickerButton(
+    selectedDate: MutableState<Timestamp?>, // Mengupdate parameter yang diterima
+    label: String // Label untuk membedakan tombol (Invoice / Tempo)
+) {
     val context = LocalContext.current
 
-    // State diambil dari konteks yang ada di AddInvoiceActivity agar konsisten
-    val companyName = remember { mutableStateOf("") }
-    val companyAddress = remember { mutableStateOf("") }
-    val invoiceNumber = remember { mutableStateOf("") }
-    val invoiceDate = remember { mutableStateOf("") }
-    val customerName = remember { mutableStateOf("") }
-    val customerAddress = remember { mutableStateOf("") }
-    val taxAmount = remember { mutableStateOf("") }
-    val items = remember { mutableStateListOf<Pair<String, String>>() }
-    val selectedStatus = remember { mutableStateOf("Lunas") }
-    var logoBitmap: Bitmap? = null // Placeholder untuk logo
+    // Fungsi untuk menampilkan DatePickerDialog
+    fun showDatePickerDialog(onDateSelected: (Timestamp) -> Unit) {
+        val calendar = Calendar.getInstance()
+        val datePickerDialog = android.app.DatePickerDialog(
+            context,
+            { _, year, month, dayOfMonth ->
+                // Update state dengan nilai Timestamp dari tanggal yang dipilih
+                calendar.set(year, month, dayOfMonth)
+                onDateSelected(Timestamp(calendar.time))
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.show()
+    }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        // Tombol Simpan
-        Button(
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = "$label: ${selectedDate.value?.toDate()?.toString() ?: "Belum dipilih"}",
+            fontSize = 16.sp,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        IconButton(
             onClick = {
-                // Validasi data sebelum memanggil addInvoiceToFirestore
-                if (companyName.value.isNotEmpty() &&
-                    companyAddress.value.isNotEmpty() &&
-                    invoiceNumber.value.isNotEmpty() &&
-                    invoiceDate.value.isNotEmpty() &&
-                    customerName.value.isNotEmpty() &&
-                    customerAddress.value.isNotEmpty() &&
-                    taxAmount.value.isNotEmpty() &&
-                    items.isNotEmpty()
-                ) {
-                    // Panggil fungsi untuk menambahkan data ke Firestore
-                    saveInvoiceToFirestore(
-                        alamatPelanggan = customerAddress.value,
-                        alamatPerusahaan = companyAddress.value,
-                        catatan = "konsultasi limbah", // Sesuaikan jika ada input field catatan
-                        item = items.map { it.second }, // Hanya mengambil nama item
-                        jatuhTempo = Timestamp.now(), // Menggunakan Timestamp yang benar
-                        namaPelanggan = customerName.value,
-                        namaPerusahaan = companyName.value,
-                        nominal = taxAmount.value.toLongOrNull() ?: 0L, // Menggunakan Long
-                        nomorInvoice = invoiceNumber.value,
-                        status = selectedStatus.value,
-                        tanggalInvoice = Timestamp.now() // Menggunakan Timestamp yang benar
-                    )
-
-
-                    // Panggil fungsi generateInvoicePdf jika dibutuhkan
-//                    generateInvoicePdf(
-//                        context = context,
-//                        logoBitmap = logoBitmap,  // Pastikan ini valid
-//                        companyName = companyName.value,
-//                        companyAddress = companyAddress.value,
-//                        invoiceNumber = invoiceNumber.value,
-//                        invoiceDate = invoiceDate.value,
-//                        customerName = customerName.value,
-//                        customerAddress = customerAddress.value,
-//                        taxAmount = taxAmount.value,
-//                        items = items,
-//                        selectedStatus = selectedStatus.value
-//                    )
-
-                } else {
-                    // Menampilkan pesan error jika data tidak lengkap
-                    Toast.makeText(context, "Lengkapi semua data sebelum menyimpan.", Toast.LENGTH_SHORT).show()
+                showDatePickerDialog { timestamp ->
+                    selectedDate.value = timestamp
                 }
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00549C)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
+            }
         ) {
-            Text(
-                text = "Simpan",
-                color = Color.White,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // Tombol Bagikan
-        Button(
-            onClick = {
-                // Tambahkan aksi untuk tombol bagikan
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7DFFB1)),
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp)
-        ) {
-            Text(
-                text = "Bagikan",
-                color = Color.Black,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+            Icon(
+                painter = painterResource(id = R.drawable.tanggal_btn), // Ikon tombol
+                contentDescription = "Pilih Tanggal"
             )
         }
     }
 }
+
 
 
 
@@ -680,78 +690,141 @@ fun generateInvoicePdf(
     customerName: String,
     customerAddress: String,
     taxAmount: String,
-    items: List<Pair<String, String>>,
+    items: List<Pair<String, String>>, // Menggunakan Pair untuk item dan harga
     selectedStatus: String
 ) {
     val pdfDocument = PdfDocument()
     val pageInfo = PdfDocument.PageInfo.Builder(595, 842, 1).create()
     val page = pdfDocument.startPage(pageInfo)
     val canvas = page.canvas
-    val paint = Paint()
+
+    // Setup paint untuk berbagai gaya teks
+    val regularPaint = Paint().apply {
+        textSize = 12f
+        color = BLACK
+    }
+
     val titlePaint = Paint().apply {
+        textSize = 24f
         isFakeBoldText = true
-        textSize = 20f
+        color = rgb(82, 71, 157) // Warna ungu sesuai design
     }
 
-    // Menambahkan logo
+    val headerPaint = Paint().apply {
+        textSize = 14f
+        isFakeBoldText = true
+        color = WHITE
+    }
+
+    val tablePaint = Paint().apply {
+        color = rgb(82, 71, 157) // Warna ungu untuk header tabel
+    }
+
+    // Logo
     logoBitmap?.let {
-        canvas.drawBitmap(it, 50f, 40f, paint)
+        val widthInPixels = (0.8 * 300 / 2.54).toInt()  // 1.5 cm
+        val heightInPixels = (1 * 300 / 2.54).toInt() // 1.5 cm
+        val resizedLogoBitmap = Bitmap.createScaledBitmap(it, widthInPixels, heightInPixels, true)
+        canvas.drawBitmap(resizedLogoBitmap, 50f, 50f, Paint())
     }
-    
 
-    // Informasi perusahaan
-    canvas.drawText(companyName, 160f, 60f, titlePaint)
-    paint.textSize = 12f
-    canvas.drawText(companyAddress, 160f, 90f, paint)
+    // Informasi Perusahaan
+    canvas.drawText(companyName, 150f, 120f, titlePaint.apply { textSize = 16f })
+    canvas.drawText("Kantor Pusat", 150f, 140f, regularPaint.apply { isFakeBoldText = true })
+    val addressLines = companyAddress.split(",")
+    var yPos = 160f
+    addressLines.forEach { line ->
+        canvas.drawText(line.trim(), 150f, yPos, regularPaint)
+        yPos += 20f
+    }
 
-    // Informasi Invoice dan Tanggal
-    titlePaint.textSize = 16f
-    canvas.drawText("INVOICE: $invoiceNumber", 445f, 60f, titlePaint)
-    paint.textSize = 12f
-    canvas.drawText("Tanggal: $invoiceDate", 445f, 80f, paint)
+    // Invoice Title dan Tanggal
+    canvas.drawText("INVOICE", 400f, 80f, titlePaint)
+    canvas.drawText(invoiceDate, 400f, 100f, regularPaint)
 
-    // Informasi Pelanggan
-    canvas.drawText("Kepada:", 50f, 200f, titlePaint)
-    paint.isFakeBoldText = true
-    canvas.drawText(customerName, 50f, 220f, paint)
-    paint.isFakeBoldText = false
-    canvas.drawText(customerAddress, 50f, 240f, paint)
+    // Informasi Customer
+    canvas.drawText("Kepada :", 400f, 140f, regularPaint)
+    canvas.drawText(customerName, 400f, 160f, regularPaint.apply { isFakeBoldText = true })
+    val customerAddressLines = customerAddress.split(",")
+    yPos = 180f
+    customerAddressLines.forEach { line ->
+        canvas.drawText(line.trim(), 400f, yPos, regularPaint)
+        yPos += 20f
+    }
 
-    // Header Tabel Item
-    val headerX = 50f
-    val headerY = 280f
-    canvas.drawText("Item", headerX, headerY, paint)
-    canvas.drawText("Harga", headerX + 200, headerY, paint)
+    // Tabel Header
+    val tableTop = 300f
+    val tableLeft = 50f
+    val columnWidths = listOf(300f, 115f, 130f) // Item, Harga, Total
 
-    // Isi Tabel Item
-    var itemY = headerY + 20
-    var totalAmount = 0.0
-    items.forEach { (itemName, itemPrice) ->
-        canvas.drawText(itemName, headerX, itemY, paint)
-        canvas.drawText(itemPrice, headerX + 200, itemY, paint)
+    // Draw table header background
+    tablePaint.style = Paint.Style.FILL
+    canvas.drawRect(tableLeft, tableTop - 30, tableLeft + columnWidths.sum(), tableTop, tablePaint)
 
-        // Konversi harga ke Double untuk menghitung total
-        val price = itemPrice.replace("Rp", "").replace(".", "").toDoubleOrNull() ?: 0.0
-        totalAmount += price
-        itemY += 20
+    // Draw table headers
+    val headers = listOf("Item", "Harga/Item", "Total")
+    var xPos = tableLeft
+    headers.forEachIndexed { index, header ->
+        canvas.drawText(header, xPos + 10, tableTop - 10, headerPaint)
+        xPos += columnWidths[index]
+    }
+
+    // Draw items
+    var currentY = tableTop + 30
+    items.forEach { (item, price) ->
+        val priceValue = price.replace("Rp", "").replace(".", "").toDoubleOrNull() ?: 0.0
+
+        xPos = tableLeft
+        canvas.drawText(item, xPos + 10, currentY, regularPaint)
+        canvas.drawText(price, xPos + columnWidths[0] + 10, currentY, regularPaint)
+        canvas.drawText(price, xPos + columnWidths[0] + columnWidths[1] + 10, currentY, regularPaint)
+
+        currentY += 40
     }
 
     // Subtotal, PPN, dan Total
-    val tax = taxAmount.toDoubleOrNull() ?: 0.0
-    val totalWithTax = totalAmount + tax
+    val subtotal = items.sumOf { (_, price) ->
+        price.replace("Rp", "").replace(".", "").toDoubleOrNull() ?: 0.0
+    }
+    val tax = subtotal * (taxAmount.toDoubleOrNull() ?: 0.0) / 100
+    val total = subtotal + tax
 
-    // Menambahkan bagian Subtotal dan Total
-    canvas.drawText("Subtotal", headerX + 350, itemY + 60, paint)
-    canvas.drawText("Rp$totalAmount", headerX + 450, itemY + 60, paint)
-    canvas.drawText("PPN $taxAmount%", headerX + 350, itemY + 80, paint)
-    canvas.drawText("Rp$tax", headerX + 450, itemY + 80, paint)
-    canvas.drawText("Total", headerX + 350, itemY + 120, titlePaint)
-    canvas.drawText("Rp$totalWithTax", headerX + 450, itemY + 120, titlePaint)
+    // Draw summary
+    val summaryStartX = tableLeft + columnWidths.sum() - 200
+    currentY += 20
+    canvas.drawText("Subtotal", summaryStartX, currentY, regularPaint)
+    canvas.drawText("Rp${String.format("%,.0f", subtotal)}", summaryStartX + 100, currentY, regularPaint)
+
+    currentY += 20
+    val ppnPaint = Paint().apply {
+        textSize = 12f
+        color = RED
+    }
+    canvas.drawText("PPN ${taxAmount}%", summaryStartX, currentY, ppnPaint)
+    canvas.drawText("Rp${String.format("%,.0f", tax)}", summaryStartX + 100, currentY, ppnPaint)
+
+    // Total background
+    tablePaint.style = Paint.Style.FILL
+    currentY += 40
+    canvas.drawRect(summaryStartX - 10, currentY - 20, summaryStartX + 200, currentY + 10, tablePaint)
+
+    // Total text
+    canvas.drawText("Total", summaryStartX, currentY, headerPaint)
+    canvas.drawText("Rp${String.format("%,.0f", total)}", summaryStartX + 100, currentY, headerPaint)
 
     pdfDocument.finishPage(page)
 
-    // Simpan ke file
-    val filePath = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "Invoice.pdf")
+    // Save PDF
+    val directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
+    var filePath = File(directory, "Invoice.pdf")
+
+    var fileCount = 1
+    while (filePath.exists()) {
+        val newFileName = "Invoice($fileCount).pdf"
+        filePath = File(directory, newFileName)
+        fileCount++
+    }
+
     try {
         pdfDocument.writeTo(FileOutputStream(filePath))
         Toast.makeText(context, "PDF berhasil disimpan di: ${filePath.path}", Toast.LENGTH_LONG).show()
@@ -761,6 +834,7 @@ fun generateInvoicePdf(
         pdfDocument.close()
     }
 }
+
 
 
 

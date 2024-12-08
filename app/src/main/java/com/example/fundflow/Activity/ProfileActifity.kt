@@ -10,6 +10,11 @@ import androidx.compose.foundation.layout.* // For layout components
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.* // Material3 for UI components
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -22,6 +27,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.zIndex
 import com.example.fundflow.Activity.ui.theme.FundflowTheme
 import com.example.fundflow.R
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 
 
 class ProfileActivity : ComponentActivity() {
@@ -34,6 +41,41 @@ class ProfileActivity : ComponentActivity() {
         }
     }
 }
+
+@Composable
+fun FetchUserData(email: String): User1? {
+    var user by remember { mutableStateOf<User1?>(null) }
+    val firestore = Firebase.firestore
+
+    LaunchedEffect(email) {
+        firestore.collection("users")
+            .whereEqualTo("email", email)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    user = User1(
+                        name = document.getString("name") ?: "",
+                        email = document.getString("email") ?: "",
+                        role = document.getString("role") ?: "",
+                        username = document.getString("username") ?: ""
+                    )
+                }
+            }
+            .addOnFailureListener {
+                // Handle errors here
+                user = null
+            }
+    }
+
+    return user
+}
+
+data class User1(
+    val name: String,
+    val email: String,
+    val role: String,
+    val username: String
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -114,7 +156,8 @@ fun ProfileScreen() {
 @Composable
 fun ProfileContent() {
     val context = LocalContext.current
-
+    val email = "alhamdulillah@gmail.com" // Email target
+    val user = FetchUserData(email)
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -133,28 +176,31 @@ fun ProfileContent() {
 
         // Informasi profil
         Text(
-            text = "Nama",
+            text = user?.name ?: "Loading...",
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(top = 16.dp)
+            modifier = Modifier.padding(top = 16.dp),
+            color =Color.Black
+
         )
         Text(
-            text = "Kategori",
+            text = user?.role ?: "Loading...",
             style = MaterialTheme.typography.bodySmall,
             color = Color.Gray,
             modifier = Modifier.padding(top = 1.dp)
         )
         Text(
-            text = "emailexample@email.com",
+            text = user?.email ?: "Loading...",
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.padding(top = 1.dp, bottom = 50.dp)
+            modifier = Modifier.padding(top = 1.dp, bottom = 50.dp),
+            color =Color.Black
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         // Add menu items below profile information
-        MenuItem(iconResId = R.drawable.loc_icon, label = "Alamat") {
-            context.startActivity(Intent(context, EditAlamatActivity::class.java))
-        }
+//        MenuItem(iconResId = R.drawable.loc_icon, label = "Alamat") {
+//            context.startActivity(Intent(context, EditAlamatActivity::class.java))
+//        }
         MenuItem(iconResId = R.drawable.data_icon, label = "Ubah data pribadi") {
             context.startActivity(Intent(context, EditDataActivity::class.java))
         }
@@ -191,8 +237,10 @@ fun MenuItem(iconResId: Int, label: String, onClick: () -> Unit) {
         // Text label
         Text(
             text = label,
-            style = MaterialTheme.typography.titleSmall
+            style = MaterialTheme.typography.titleSmall,
+            color = Color.Black // Menetapkan warna teks menjadi hitam
         )
+
     }
 }
 

@@ -48,7 +48,7 @@ import com.example.fundflow.R
 class EditPasswordActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
         setContent {
             FundflowTheme {
                 mainstatePassword()

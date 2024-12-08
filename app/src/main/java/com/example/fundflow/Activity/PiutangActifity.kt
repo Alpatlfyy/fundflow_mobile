@@ -1,18 +1,20 @@
 package com.example.fundflow.Activity
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.WindowManager
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,25 +29,138 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.fundflow.Activity.ui.theme.FundflowTheme
 import com.example.fundflow.R
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 
-class PiutangActifity : ComponentActivity() {
+import androidx.compose.runtime.*
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
+import java.text.NumberFormat
+import java.util.Locale
+
+class PiutangActivity : ComponentActivity() {
+    private lateinit var firestore: FirebaseFirestore
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+
+
+        firestore = Firebase.firestore
+
+
+        // Mengambil data dari Firestore dan mengisi piutangList
         setContent {
-            FundflowTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    mainStatePiutangActivity(piutangList = samplePiutangList(), modifier = Modifier.padding(innerPadding))
+            val piutangList = remember { mutableStateListOf<Piutang>() }
+
+            // Mengambil data dari Firestore dalam coroutine
+            LaunchedEffect(Unit) {
+                getPiutang { piutangs ->
+                    piutangList.clear()
+                    piutangList.addAll(piutangs)
                 }
+            }
+
+            FundflowTheme {
+                mainStatePiutangListActivity(
+                    piutangList = piutangList,
+                    onDelete = { id ->
+                        deletePiutang(
+                            id,
+                            onSuccess = {
+                                // Hapus item dari daftar lokal
+                                piutangList.removeIf { it.id == id }
+                            },
+                            onFailure = { exception ->
+                                println("Error deleting document: $exception")
+                            }
+                        )
+                    },
+                    onMarkAsPaid = { id ->
+                        markAsPaid(
+                            id,
+                            onSuccess = {
+                                val index = piutangList.indexOfFirst { it.id == id }
+                                if (index != -1) {
+                                    piutangList[index] = piutangList[index].copy(status = "Lunas")
+                                }
+                            },
+                            onFailure = { exception ->
+                                println("Error updating status: $exception")
+                            }
+                        )
+                    }
+                )
             }
         }
     }
+
+
+    private fun getPiutang(onResult: (List<Piutang>) -> Unit) {
+        firestore.collection("utang piutang")
+            .whereEqualTo("jenis", "piutang")
+            .addSnapshotListener { snapshot, exception ->
+                if (exception != null) {
+                    println("Error listening to updates: $exception")
+                    return@addSnapshotListener
+                }
+
+                if (snapshot != null) {
+                    val piutangs = snapshot.documents.map { document ->
+                        Piutang(
+                            id = document.id, // Ambil ID dokumen
+                            companyName = document.getString("keterangan") ?: "Unknown",
+                            date = document.getTimestamp("jatuh tempo")?.toDate()?.toString() ?: "N/A",
+                            service = document.getString("keterangan") ?: "N/A",
+                            amount = formatRupiah(document.getDouble("nominal") ?: 0.0),
+                            status = "Belum Lunas"
+                        )
+                    }
+                    onResult(piutangs) // Kirimkan data yang diperbarui ke callback
+                }
+            }
+    }
+
+
+    private fun deletePiutang(id: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        firestore.collection("utang piutang")
+            .document(id) // Hapus berdasarkan ID dokumen
+            .delete()
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
+
+    private fun markAsPaid(id: String, onSuccess: () -> Unit, onFailure: (Exception) -> Unit) {
+        firestore.collection("utang piutang")
+            .document(id)
+            .update("status", "Lunas") // Memperbarui field status menjadi "Lunas"
+            .addOnSuccessListener {
+                onSuccess()
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
+
 }
 
-// Sample data class for invoices
+//fun formatRupiah(amount: Double): String {
+//    val format = NumberFormat.getCurrencyInstance(Locale("in", "ID"))
+//    return format.format(amount).replace("Rp", "Rp ")
+//}
+
+// Sample data class for piutang
 data class Piutang(
+    val id: String, // Tambahkan ID dokumen
     val companyName: String,
     val date: String,
     val service: String,
@@ -53,12 +168,18 @@ data class Piutang(
     val status: String
 )
 
-@Composable
-fun mainStatePiutangActivity(piutangList: List<Piutang>, modifier: Modifier = Modifier) {
-    val context = LocalContext.current
 
-    Column(modifier = modifier) {
-        // Gambar latar belakang
+@Composable
+fun mainStatePiutangListActivity(
+    piutangList: List<Piutang>,
+    onDelete: (String) -> Unit,
+    onMarkAsPaid: (String) -> Unit
+) {
+    val context = LocalContext.current
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    var deleteTargetId by remember { mutableStateOf("") }
+
+    Column {
         Image(
             painter = painterResource(id = R.drawable.background_main),
             contentDescription = "Background",
@@ -66,110 +187,157 @@ fun mainStatePiutangActivity(piutangList: List<Piutang>, modifier: Modifier = Mo
             contentScale = ContentScale.Crop
         )
     }
-        Box(
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp) // Padding agar tidak terlalu mepet ke pinggir
+    ) {
+        // Header Row (Back Arrow + Title)
+        Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
+                .fillMaxWidth()  // Agar Row mengisi lebar penuh
+                .padding(top = 4.dp), // Padding sesuai kebutuhan
+            verticalAlignment = Alignment.CenterVertically // Konten sejajar secara vertikal
         ) {
-            // Header Row
-            Row(
+            // Ikon di posisi start
+            Image(
+                painter = painterResource(id = R.drawable.ic_back_arrow),
+                contentDescription = "Back Arrow",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 18.dp),
-                verticalAlignment = Alignment.CenterVertically
+                    .size(24.dp)  // Ukuran ikon
+                    .align(Alignment.CenterVertically) // Agar ikon sejajar vertikal
+                    .clickable { (context as? ComponentActivity)?.finish() }
+            )
+
+            // Spasi di antara ikon dan teks
+            Spacer(modifier = Modifier.width(125.dp))
+
+            // Teks di tengah dengan weight
+            Text(
+                text = "Piutang",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White,
+                modifier = Modifier
+                    .weight(1f) // Ini membuat teks mengisi ruang di antara ikon dan ujung Row
+                    .align(Alignment.CenterVertically) // Pastikan teks tetap sejajar secara vertikal
+            )
+        }
+
+        // Jika daftar piutang kosong, tampilkan gambar 'ic_list_empty'
+        if (piutangList.isEmpty()) {
+            Column(
+                modifier = Modifier.align(Alignment.Center), // Menempatkan kolom di tengah layar
+                horizontalAlignment = Alignment.CenterHorizontally // Menyelaraskan konten di tengah secara horizontal
             ) {
-                // Ikon kembali
                 Image(
-                    painter = painterResource(id = R.drawable.ic_back_arrow),
-                    contentDescription = "Back Arrow",
-                    modifier = Modifier.size(24.dp)
+                    painter = painterResource(id = R.drawable.ic_list_empty),
+                    contentDescription = "Empty List",
+                    modifier = Modifier.size(150.dp) // Mengatur ukuran gambar
                 )
-                Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "Piutang",
-                    fontSize = 25.sp,
+                    text = "Belum ada kategori yang tersimpan",
+                    fontSize = 19.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color.Black,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 8.dp) // Memberikan jarak antara gambar dan teks
                 )
-                Spacer(modifier = Modifier.weight(1f))
-            }
-
-            if (piutangList.isEmpty()) {
-                // Tampilkan pesan jika daftar kosong
-                Column(
-                    modifier = Modifier.align(Alignment.Center),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_list_empty),
-                        contentDescription = "Empty List",
-                        modifier = Modifier.size(150.dp)
-                    )
-                    Text(
-                        text = "Belum ada piutang yang tersimpan",
-                        fontSize = 19.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.Black,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
-                    Text(
-                        text = "Tambahkan piutang baru untuk memulai",
-                        fontSize = 16.sp,
-                        color = Color.Gray,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(top = 8.dp)
-                    )
-                }
-            } else {
-                // Menampilkan daftar invoice jika tidak kosong
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 96.dp)
-                ) {
-                    items(piutangList) { invoice ->
-                        PiutangItem(
-                            companyName = invoice.companyName,
-                            date = invoice.date,
-                            service = invoice.service,
-                            amount = invoice.amount,
-                            status = invoice.status
-                        )
-                    }
-                }
-            }
-
-            // Tombol tambah piutang
-            Button(
-                onClick = {
-                    // Implementasi navigasi ke AddInvoiceActivity jika diperlukan
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00549C)),
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 16.dp)
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
                 Text(
-                    text = "Tambah Piutang",
-                    color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    text = "Tambahkan Piutang baru untuk memulai menampilkan data Anda",
+                    fontSize = 16.sp,
+                    color = Color.Gray,
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 8.dp) // Memberikan jarak antara gambar dan teks
                 )
+            }
+        } else {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 46.dp, bottom = 46.dp) // Menambahkan padding agar tidak menutupi header
+            ) {
+                items(piutangList) { piutang ->
+                    PiutangItem(
+                        companyName = piutang.companyName,
+                        date = piutang.date,
+                        amount = piutang.amount,
+                        status = piutang.status,
+                        onDelete = {
+                            deleteTargetId = piutang.id
+                            showDeleteDialog = true
+                        },
+                        onMarkAsPaid = {
+                            onMarkAsPaid(piutang.id)
+                        }
+                    )
+                }
             }
         }
-    }
 
+        if (showDeleteDialog) {
+            AlertDialog(
+                onDismissRequest = { showDeleteDialog = false },
+                title = {
+                    Text(text = "Konfirmasi Hapus")
+                },
+                text = {
+                    Text(text = "Apakah Anda yakin ingin menghapus data ini?")
+                },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            onDelete(deleteTargetId)
+                            showDeleteDialog = false
+                            Toast.makeText(
+                                context,
+                                "Data berhasil dihapus",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    ) {
+                        Text("Hapus")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showDeleteDialog = false }) {
+                        Text("Batal")
+                    }
+                }
+            )
+        }
+
+        Button(
+            onClick = {
+                val intent = Intent(context, AddPiutangActivity::class.java)
+                context.startActivity(intent)
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00549C)),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+                .fillMaxWidth()
+                .height(50.dp)
+        ) {
+            Text(
+                text = "Tambah Piutang",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
 
 @Composable
 fun PiutangItem(
     companyName: String,
     date: String,
-    service: String,
     amount: String,
-    status: String
+    status: String,
+    onDelete: () -> Unit,
+    onMarkAsPaid: () -> Unit
 ) {
     Box(
         modifier = Modifier
@@ -207,16 +375,11 @@ fun PiutangItem(
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = service,
-                    fontSize = 14.sp,
-                    color = Color.Black,
-                    fontWeight = FontWeight.Medium
-                )
             }
 
-            Column(horizontalAlignment = Alignment.End) {
+            Column(
+                horizontalAlignment = Alignment.End
+            ) {
                 Text(
                     text = amount,
                     fontWeight = FontWeight.Bold,
@@ -228,22 +391,49 @@ fun PiutangItem(
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
+                Spacer(modifier = Modifier.height(8.dp)) // Spasi sebelum tombol
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Button(
+                        onClick = onDelete,
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Red),
+                        modifier = Modifier.size(width = 78.dp, height = 30.dp)
+                    ) {
+                        Text(
+                            text = "Hapus",
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Button(
+                        onClick = onMarkAsPaid, // Callback dipanggil di sini
+                        colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
+                        modifier = Modifier.size(width = 78.dp, height = 30.dp)
+                    ) {
+                        Text(
+                            text = "Lunas",
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
             }
         }
     }
 }
 
+
+
 @Preview(showBackground = true)
 @Composable
-fun PiutangActivityPreview() {
-    FundflowTheme {
-        mainStatePiutangActivity(piutangList = samplePiutangList())
-    }
+fun PiutangListPreview() {
+//    mainStatePiutangListActivity(piutangList = samplePiutangList())
 }
 
 fun samplePiutangList(): List<Piutang> {
     return listOf(
-        Piutang("PT. Gudang Garam Tbk", "4 April 2025", "Jasa Konsultan", "Rp 9.600.000", "Belum Lunas"),
-        Piutang("PT. Indofood Sukses Makmur", "10 Mei 2025", "Pengadaan", "Rp 12.000.000", "Lunas")
+//        Piutang("PT. Gudang Garam Tbk", "4 April 2025", "Jasa Konsultan", "Rp 9.600.000", "Belum Lunas"),
+//        Piutang("PT. Indofood Sukses Makmur", "10 Mei 2025", "Pengadaan", "Rp 12.000.000", "Lunas")
     )
 }
