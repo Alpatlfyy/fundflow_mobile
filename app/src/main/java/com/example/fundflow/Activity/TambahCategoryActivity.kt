@@ -13,12 +13,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.fundflow.Adapter.RecentOperationsAdapter
+
 import com.example.fundflow.R
 import com.example.fundflow.fragment.KategoriFragmentKeluar
 import com.example.fundflow.fragment.KategoriFragmentMasuk
+import com.example.fundflow.model.RecentOperation
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.firestore.FirebaseFirestore
-
+import java.util.Date
 
 class TambahCategoryActivity : AppCompatActivity() {
     private val db = FirebaseFirestore.getInstance()
@@ -26,22 +29,23 @@ class TambahCategoryActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var fragmentContainer: FrameLayout
     private lateinit var imageViewBulat: ImageView
-    private var selectedIconResourceId: Int = R.drawable.ic_def_rapat// Default icon
+    private var selectedIconResourceId: Int = R.drawable.ic_def_rapat // Default icon
+    private lateinit var recentOperationsList: MutableList<RecentOperation>
+    private lateinit var recentOperationsAdapter: RecentOperationsAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_tambah_category)
 
+        recentOperationsList = mutableListOf()
+        recentOperationsAdapter = RecentOperationsAdapter(recentOperationsList)
+
+
         // Initialize UI components
         setupUI()
-
-        // Display the initial fragment based on the tab position
         displayFragment(0)
-
-        // Setup tab listener for fragment switching
         setupTabListener()
-
-        // Setup listener for adding category button
         setupAddCategoryButton()
     }
 
@@ -59,7 +63,7 @@ class TambahCategoryActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         // Back button listener
-        findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
+        findViewById<ImageButton>(R.id.btnBack)?.setOnClickListener {
             onBackPressed()
         }
 
@@ -166,33 +170,20 @@ class TambahCategoryActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 displayFragment(tab.position)
             }
-
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
     }
 
     private fun setupAddCategoryButton() {
-        findViewById<Button>(R.id.btnTambahKategori).setOnClickListener {
+        findViewById<Button>(R.id.btnTambahKategori)?.setOnClickListener {
             val categoryName = getCategoryName()
-
             if (categoryName.isEmpty()) {
                 Toast.makeText(this, "Nama kategori tidak boleh kosong", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            if (selectedIconResourceId == R.drawable.ic_bc_profil) { // Ensure an icon has been selected
-                Toast.makeText(
-                    this,
-                    "Silakan pilih ikon kategori terlebih dahulu",
-                    Toast.LENGTH_SHORT
-                ).show()
-                return@setOnClickListener
-            }
-
-            val categoryType =
-                if (tabLayout.selectedTabPosition == 0) "Pemasukan" else "Pengeluaran"
-
+            val categoryType = if (tabLayout.selectedTabPosition == 0) "Pemasukan" else "Pengeluaran"
             checkAndAddCategory(categoryName, categoryType, selectedIconResourceId)
         }
     }
@@ -210,12 +201,9 @@ class TambahCategoryActivity : AppCompatActivity() {
         }
     }
 
-    // Method to get category name from EditText
     fun getCategoryName(): String {
         return nameCategoryEditText.text.toString().trim()
     }
-
-    // Method to change the image based on selected icon
     fun changeImage(iconResourceId: Int) {
         selectedIconResourceId = iconResourceId
         imageViewBulat.setImageResource(selectedIconResourceId)
@@ -248,25 +236,28 @@ class TambahCategoryActivity : AppCompatActivity() {
         categoryType: String,
         iconResourceId: Int
     ) {
-        // Mendapatkan nama file drawable tanpa ekstensi
         val iconName = getDrawableName(iconResourceId)
-
         val category = hashMapOf(
             "name" to categoryName,
             "type" to categoryType,
-            "icon" to iconName // Menyimpan nama file drawable
+            "icon" to iconName
         )
 
-        // Simpan kategori ke Firestore (contoh implementasi)
-        val db = FirebaseFirestore.getInstance()
         db.collection("kategori")
             .add(category)
-            .addOnSuccessListener { documentReference ->
-                Log.d("Firestore", "DocumentSnapshot added with ID: ${documentReference.id}")
+            .addOnSuccessListener {
+                // Tambahkan kategori ke list operasi terbaru
+                val newCategory = RecentOperation(
+                    type = "Kategori",
+                    name = categoryName,
+                    icon = iconResourceId,
+                )
+                recentOperationsList.add(0, newCategory) // Tambahkan ke atas
+                recentOperationsAdapter.notifyItemInserted(0)
 
-                // Setelah data berhasil ditambahkan, navigasi kembali ke ActivitySearchKategori
+                // Navigasi kembali ke CategoryActivity
                 val intent = Intent(this, CategoryActivity::class.java)
-                startActivity(intent) // Memulai ActivitySearchKategori
+                startActivity(intent)
                 finish()
             }
             .addOnFailureListener { e ->
@@ -274,10 +265,8 @@ class TambahCategoryActivity : AppCompatActivity() {
             }
     }
 
+
     private fun getDrawableName(drawableId: Int): String {
-        // Mendapatkan nama resource drawable berdasarkan ID
-        val resources = this.resources
-        val resourceName = resources.getResourceEntryName(drawableId)
-        return resourceName // Nama file tanpa ekstensi
+        return resources.getResourceEntryName(drawableId)
     }
 }

@@ -1,168 +1,146 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar1"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blue_00549C"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:background="@color/blue_00549C"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-            <ImageButton
-                android:id="@+id/btnnnBack"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_back_arrow"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                app:tint="@android:color/white"
-                android:layout_alignParentStart="true" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Ubah Nama"
-                android:textColor="@android:color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:fontFamily="@font/poppins_medium" />
-        </RelativeLayout>
-    </androidx.appcompat.widget.Toolbar>
-
-    <!-- Content -->
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <!-- Nomor Tujuan Section -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kategori pilihan"
-                android:textColor="#0079C2"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:padding="8dp">
+                android:layout_gravity="center">
 
-                <!-- Profile Icon -->
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
-                    android:src="@drawable/ic_bc_profil" />
-
-                <!-- Name and Bank Info -->
-                <LinearLayout
-                    android:layout_width="0dp"
+                <ImageButton
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_gravity="center"
-                    android:orientation="vertical">
+                    android:src="@drawable/ic_back_arrow"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="@android:color/white"
+                    android:layout_alignParentStart="true" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="nama kategori"
-                        android:textColor="@color/gray"
-                        android:textSize="16sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="Kategori"
+                    android:textColor="@android:color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/poppins_medium" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
 
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#E0E0E0"
-                android:layout_marginVertical="16dp" />
+        <!-- Rectangle Container for TabLayout -->
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:cardElevation="0dp">
 
-            <!-- Simpan Sebagai Section -->
-            <TextView
-                android:id="@+id/simpansebagai"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Simpan Sebagai"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <!-- Icon Kategori and EditText in Horizontal Layout -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="8dp"
-                android:padding="8dp">
+                android:orientation="vertical"
+                android:background="@drawable/card_background_with_stroke">
 
-                <!-- Icon Kategori -->
-                <ImageView
-                    android:id="@+id/iconKategori"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_rapat"
-                    android:contentDescription="Icon kategori"
-                    android:layout_marginEnd="8dp" />
-
-                <!-- EditText for Inputting Kategori -->
-                <LinearLayout
+                <!-- TabLayout untuk navigasi -->
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginStart="8dp"
-                    android:background="@drawable/custom_edittext_selector"
-                    android:padding="12dp"
-                    android:layout_weight="1">
-
-                    <EditText
-                        android:id="@+id/namaCategory"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Buat nama kategori"
-                        android:textColorHint="@color/gray"
-                        android:background="@android:color/transparent"
-                        android:inputType="text" />
-                </LinearLayout>
+                    android:layout_height="44dp"
+                    app:tabIndicator="@null"
+                    app:tabBackground="@drawable/tab_selector"
+                    app:tabTextColor="@color/tab_text_selector"
+                    app:tabMode="fixed" />
             </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+        </androidx.cardview.widget.CardView>
 
-    <!-- Tombol Tambah Kategori -->
-    <Button
-        android:id="@+id/btncatat"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Simpan"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/blue_00549C"
-        android:textColor="@android:color/white"
-        android:drawablePadding="12dp"
-        android:padding="12dp"
-        android:background="@drawable/bg_button_rounded" />
-</LinearLayout>
+        <!-- Icon Kategori di Luar Layout EditText -->
+        <ImageView
+            android:id="@+id/iconKategori"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_rapat"
+            android:contentDescription="Icon kategori"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/cardView"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <!-- EditText untuk Masukkan Kategori -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/custom_edittext_selector"
+            android:padding="12dp"
+            app:layout_constraintTop_toBottomOf="@id/cardView"
+            app:layout_constraintStart_toEndOf="@id/iconKategori"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/namaCategory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:hint="Buat nama kategori"
+                android:textColorHint="@color/gray"
+                android:background="@android:color/transparent"
+                android:inputType="text" />
+        </LinearLayout>
+
+        <!-- FrameLayout untuk menampung fragment -->
+        <FrameLayout
+            android:id="@+id/fragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintTop_toBottomOf="@id/iconKategori"
+            app:layout_constraintBottom_toTopOf="@id/btnTambahKategori" />
+
+        <!-- Bottom Button untuk Tambah Kategori -->
+        <Button
+            android:id="@+id/btnTambahKategori"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tambah Kategori"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/blue_00549C"
+            android:textColor="@android:color/white"
+            android:fontFamily="@font/poppins_medium"
+            android:background="@drawable/bg_button_rounded"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,55 +1,87 @@
 import android.content.Context
-import android.graphics.Color // Ubah di sini
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.fundflow.Domain.ExpenseDomain
-import com.example.fundflow.Repository.MainRepository
+import com.example.fundflow.R
 import com.example.fundflow.databinding.ViewholderItemsBinding
-import java.text.NumberFormat
-import java.util.Locale
+import java.text.DecimalFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
-class ExpenseListAdapter(private val items: MutableList<ExpenseDomain>) :
-    RecyclerView.Adapter<ExpenseListAdapter.Viewholder>() {
+class ExpenseListAdapter(
+    private val items: MutableList<ExpenseDomain>,
+    private val onEdit: (ExpenseDomain) -> Unit, // Callback untuk Edit
+    private val onDelete: (ExpenseDomain) -> Unit // Callback untuk Hapus
+
+) : RecyclerView.Adapter<ExpenseListAdapter.Viewholder>() {
 
     class Viewholder(val binding: ViewholderItemsBinding) : RecyclerView.ViewHolder(binding.root)
 
     private lateinit var context: Context
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ExpenseListAdapter.Viewholder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Viewholder {
         context = parent.context
         val binding = ViewholderItemsBinding.inflate(LayoutInflater.from(context), parent, false)
         return Viewholder(binding)
     }
 
-    override fun onBindViewHolder(holder: ExpenseListAdapter.Viewholder, position: Int) {
+    fun updateData(newItems: List<ExpenseDomain>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
+
+    override fun onBindViewHolder(holder: Viewholder, position: Int) {
         val item = items[position]
 
-        holder.binding.titleTxt.text = item.title
-        holder.binding.timeTxt.text = item.time
+        // Set title and category
+        holder.binding.titleTxt.text = item.kategori
 
-        // Format harga menjadi string dalam format Rupiah
-        val priceText = MainRepository().getFormattedPrice(item.price, item.pic)
+        // Format date to readable string
+        val dateFormat = SimpleDateFormat("d MMMM yyyy", Locale("id", "ID"))
+        val formattedDate = dateFormat.format(item.tanggal.toDate())
+        holder.binding.timeTxt.text = formattedDate
+
+        // Format amount to Rupiah
+        val priceText = "Rp ${DecimalFormat("#,###.00").format(item.jumlah)}"
         holder.binding.priceTxt.text = priceText
 
-        // Mengubah warna teks berdasarkan jenis
+        // Set icon from drawable resource
+        val iconResId = context.resources.getIdentifier(item.icon, "drawable", context.packageName)
+        holder.binding.pic.setImageResource(iconResId)
+
+        // Set text color based on type
         holder.binding.priceTxt.setTextColor(
-            if (item.pic == "img2") {
-                Color.parseColor("#FF4747") // Warna untuk pengeluaran
-            } else {
-                Color.parseColor("#00BC78") // Warna default untuk pemasukan
+            when (item.jenis.lowercase()) {
+                "pengeluaran" -> Color.parseColor("#FF4747") // Red for expense
+                "pemasukan" -> Color.parseColor("#00BC78")  // Green for income
+                else -> Color.BLACK // Default for unknown types
             }
         )
 
-        val drawableResourceId = holder.itemView.resources.getIdentifier(item.pic, "drawable", context.packageName)
-
-        Glide.with(context)
-            .load(drawableResourceId)
-            .into(holder.binding.pic)
+        // Handle long click to show PopupMenu
+        holder.itemView.setOnLongClickListener {
+            val popupMenu = PopupMenu(context, holder.itemView)
+            popupMenu.menuInflater.inflate(R.menu.item_options_menu, popupMenu.menu)
+            popupMenu.setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.edit_option -> {
+                        onEdit(item) // Trigger Edit callback
+                        true
+                    }
+                    R.id.delete_option -> {
+                        onDelete(item) // Trigger Delete callback
+                        true
+                    }
+                    else -> false
+                }
+            }
+            popupMenu.show()
+            true
+        }
     }
 
     override fun getItemCount(): Int = items.size

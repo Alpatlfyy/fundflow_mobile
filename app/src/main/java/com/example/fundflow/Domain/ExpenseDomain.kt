@@ -1,41 +1,13 @@
 package com.example.fundflow.Domain
 
-import android.os.Parcel
-import android.os.Parcelable
+import com.google.firebase.Timestamp
 
 data class ExpenseDomain(
-    val title:String="",
-    val price:Double=0.0,
-    val pic:String="",
-    val time:String=""
-):Parcelable{
-    constructor(parcel: Parcel) : this(
-        parcel.readString().toString(),
-        parcel.readDouble(),
-        parcel.readString().toString(),
-        parcel.readString().toString()
-    ) {
-    }
+    val id: String = "", // ID dokumen Firestore
+    val icon: String = "",
+    val jenis: String = "",
+    val jumlah: Double = 0.0,
+    val kategori: String = "",
+    val tanggal: com.google.firebase.Timestamp = com.google.firebase.Timestamp.now()
+)
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(title)
-        parcel.writeDouble(price)
-        parcel.writeString(pic)
-        parcel.writeString(time)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<ExpenseDomain> {
-        override fun createFromParcel(parcel: Parcel): ExpenseDomain {
-            return ExpenseDomain(parcel)
-        }
-
-        override fun newArray(size: Int): Array<ExpenseDomain?> {
-            return arrayOfNulls(size)
-        }
-    }
-
-}

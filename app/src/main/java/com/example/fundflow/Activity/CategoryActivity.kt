@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fundflow.R
-import com.example.fundflow.databinding.ActivityCategorySearchBinding  // Import binding class
+import com.example.fundflow.databinding.ActivityCategorySearchBinding
 import com.example.fundflow.fragment.KategoriFragmentRec
 import com.example.fundflow.fragment.KategoriFragmentRec2
-import com.example.fundflow.fragment.PemasukanFragment
-import com.example.fundflow.fragment.PengeluaranFragment
 import com.google.android.material.tabs.TabLayout
 
 class CategoryActivity : AppCompatActivity() {
@@ -32,20 +30,29 @@ class CategoryActivity : AppCompatActivity() {
         binding = ActivityCategorySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         // Inisialisasi ToolbarS
         setSupportActionBar(binding.toolbar)
 
         // Fungsi Tombol Kembali
         binding.btnnBack.setOnClickListener {
-            finish()  // Menutup aktivitas saat tombol kembali ditekan
+            val fragment = supportFragmentManager.findFragmentById(R.id.fragmentContainer)
+            if (fragment is KategoriFragmentRec || fragment is KategoriFragmentRec2) {
+                val intent = Intent(this, DashboardActivity::class.java)
+                startActivity(intent)
+                finish() // Tutup activity
+            } else {
+                super.onBackPressed() // Default behavior
+            }
         }
+
         // Fungsi Tombol Tambah Kategori
         binding.tambahKategori.setOnClickListener {
             // Pindah ke aktivitas untuk menambah kategori baru
             val intent = Intent(this, TambahCategoryActivity::class.java)
             startActivity(intent)
+            finish()
         }
+
         // Initialize TabLayout
         tabLayout = findViewById(R.id.tabLayout)
 
@@ -53,7 +60,6 @@ class CategoryActivity : AppCompatActivity() {
         tabLayout.addTab(tabLayout.newTab().setText("Pemasukan"))
         tabLayout.addTab(tabLayout.newTab().setText("Pengeluaran"))
 
-        // Initialize Fragment Container
         // Initialize Fragment Container
         fragmentContainer = findViewById(R.id.fragmentContainer)
 
@@ -79,9 +85,42 @@ class CategoryActivity : AppCompatActivity() {
         }
         fragment?.let {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, it)
+                .replace(R.id.fragmentContainer, it, it.javaClass.simpleName) // Menambahkan tag fragment
                 .commit()
+        }
+    }
+
+    // Fungsi untuk menyegarkan fragment yang sesuai dengan tab aktif
+    fun refreshCategoryFragment() {
+        val currentTab = tabLayout.selectedTabPosition
+        val fragmentTag = when (currentTab) {
+            0 -> KategoriFragmentRec::class.java.simpleName
+            1 -> KategoriFragmentRec2::class.java.simpleName
+            else -> null
+        }
+
+        fragmentTag?.let { tag ->
+            val fragment = supportFragmentManager.findFragmentByTag(tag)
+            if (fragment is RefreshableFragment) {
+                fragment.refreshCategories() // Panggil metode refresh pada fragment aktif
+            } else {
+                // Jika fragment tidak ditemukan, buat ulang
+                val newFragment = when (currentTab) {
+                    0 -> KategoriFragmentRec()
+                    1 -> KategoriFragmentRec2()
+                    else -> null
+                }
+                newFragment?.let {
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragmentContainer, it, tag)
+                        .commit()
+                }
+            }
         }
     }
 }
 
+// Tambahkan interface untuk mendukung fungsi refresh pada fragment
+interface RefreshableFragment {
+    fun refreshCategories()
+}

@@ -17,9 +17,9 @@
         android:title="" />
 
     <item
-        android:id="@+id/activity"
-        android:title="Activity"
-        android:icon="@drawable/ic_email" />
+        android:id="@+id/kategori"
+        android:title="Kategori"
+        android:icon="@drawable/ic_kategori" />
     <item
         android:id="@+id/profile"
         android:title="Profile"

@@ -43,7 +43,7 @@
         android:layout_marginTop="20dp">
 
         <EditText
-            android:id="@+id/et_nominal"
+            android:id="@+id/et_nominal1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Rp 0"
@@ -87,7 +87,7 @@
 
             <!-- "Tulis Catatan" EditText -->
             <EditText
-                android:id="@+id/et_tulis_catatan"
+                android:id="@+id/et_tulis_catatan1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Tulis catatan (opsional)"
@@ -113,7 +113,7 @@
 
     <!-- Circle Icon Separate from Spinner -->
     <ImageView
-        android:id="@+id/category_circle_icon"
+        android:id="@+id/category_circle_icon1"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/bg_circle"
@@ -130,14 +130,14 @@
         android:background="@drawable/custom_edittext_selector"
         android:padding="10dp"
         app:layout_constraintTop_toBottomOf="@id/nominal_catatan_layout"
-        app:layout_constraintStart_toEndOf="@id/category_circle_icon"
+        app:layout_constraintStart_toEndOf="@id/category_circle_icon1"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="5dp">
 
         <!-- Spinner for Category -->
         <Spinner
-            android:id="@+id/userRoleSpinner"
+            android:id="@+id/userRoleSpinner1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -154,5 +154,21 @@
             android:src="@drawable/ic_arrow_drop_down"
             android:layout_gravity="center_vertical"/>
     </LinearLayout>
+    <!-- Bottom Button untuk Tambah Kategori -->
+    <Button
+        android:id="@+id/btnTambahKategori1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tambah"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/blue_00549C"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/poppins_medium"
+        android:background="@drawable/bg_button_rounded"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,9 +1,12 @@
 package com.example.fundflow.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,10 +17,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 class KategoriFragmentRec : Fragment() {
+
     private lateinit var recyclerViewCategory: RecyclerView
     private lateinit var categoryAdapter: CategoryAdapter
+    private lateinit var loadingIndicator: ProgressBar
     private val firestore = FirebaseFirestore.getInstance()
     private val categoryList = mutableListOf<CategoryItem>()
+    var tabType: String = "Pemasukan" // Default type is "Pemasukan"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,67 +31,81 @@ class KategoriFragmentRec : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_recycleview_category, container, false)
 
-        // Initialize RecyclerView
         recyclerViewCategory = view.findViewById(R.id.view1)
         recyclerViewCategory.layoutManager = LinearLayoutManager(context)
 
-        // Initialize Adapter
-        recyclerViewCategory.layoutManager = LinearLayoutManager(requireContext())
-        categoryAdapter = CategoryAdapter(requireContext(), categoryList, "Pemasukan") // atau "Pengeluaran"
-
+        categoryAdapter = CategoryAdapter(requireContext(), categoryList, tabType)
         recyclerViewCategory.adapter = categoryAdapter
 
-        // Load categories from Firestore
-        loadCategoriesFromFirestore("Pemasukan") // change to "Pengeluaran" for different fragment if needed
+        loadingIndicator = view.findViewById(R.id.loadingIndicator1)
+
+        loadCategoriesFromFirestore(tabType)
 
         return view
     }
 
-    private fun loadCategoriesFromFirestore(type: String) {
-        println("Loading categories of type: $type")  // Debug log
+
+    fun loadCategoriesFromFirestore(type: String) {
+        if (!isAdded) {
+            Log.e("KategoriFragmentRec", "Fragment is not attached to activity. Skipping load.")
+            return
+        }
+
+        Log.d("KategoriFragmentRec", "Loading categories for type: $type")
+        loadingIndicator.visibility = View.VISIBLE
 
         firestore.collection("kategori")
             .whereEqualTo("type", type)
             .orderBy("name", Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener { documents ->
-                val categoryList = mutableListOf<CategoryItem>()
+                if (!isAdded) return@addOnSuccessListener // Skip if fragment is detached
+
+                val categories = mutableListOf<CategoryItem>()
                 if (documents.isEmpty) {
-                    println("No documents found for type: $type") // Jika tidak ada dokumen ditemukan
                     showEmptyState()
                 } else {
                     for (document in documents) {
                         val categoryName = document.getString("name") ?: "Unknown"
                         val categoryIcon = document.getString("icon")
-                        println("Found category: $categoryName with type: ${document.getString("type")}") // Debug log
-
-                        categoryList.add(CategoryItem(categoryName, getIconDrawable(categoryIcon)))
+                        categories.add(CategoryItem(categoryName, getIconDrawable(categoryIcon)))
                     }
-                    categoryAdapter.updateCategories(categoryList)
+                    updateCategoryList(categories)
                 }
+                loadingIndicator.visibility = View.GONE
             }
-            .addOnFailureListener { exception ->
-                println("Error getting documents: $exception")
+            .addOnFailureListener {
+                if (!isAdded) return@addOnFailureListener // Skip if fragment is detached
                 showErrorState()
+                loadingIndicator.visibility = View.GONE
             }
     }
 
+    fun refreshCategories() {
+        Log.d("KategoriFragmentRec", "Refreshing categories for tabType: $tabType")
+        loadCategoriesFromFirestore(tabType)
+    }
 
+    private fun updateCategoryList(categories: List<CategoryItem>) {
+        categoryAdapter.updateCategories(categories)
+    }
 
     private fun showEmptyState() {
-        // Display an empty state message or image (add logic here if needed)
-        println("No categories available.")
+        context?.let {
+            Toast.makeText(it, "No categories found", Toast.LENGTH_SHORT).show()
+        }
     }
+
 
     private fun showErrorState() {
-        // Display an error state message to the user (add logic here if needed)
-        println("Failed to load categories.")
+        Toast.makeText(requireContext(), "Error loading categories", Toast.LENGTH_SHORT).show()
     }
 
-    // Map icon string to drawable resource (assuming your icons are stored in resources)
     private fun getIconDrawable(iconName: String?): Int {
         return when (iconName) {
             "ic_rapat" -> R.drawable.ic_rapat
+            "ic_present" -> R.drawable.ic_present
+            "ic_proyektor" -> R.drawable.ic_proyektor
             "ic_helm" -> R.drawable.ic_helm
             "ic_kerjsama" -> R.drawable.ic_kerjsama
             "ic_daun" -> R.drawable.ic_daun
@@ -143,7 +163,7 @@ class KategoriFragmentRec : Fragment() {
             "ic_kapal" -> R.drawable.ic_kapal
             "ic_jet" -> R.drawable.ic_jet
             "ic_pesawat" -> R.drawable.ic_pesawat
-            else -> R.drawable.ic_bc_profil // Default icon if none match
+            else -> R.drawable.ic_bc_profil // Default icon
         }
     }
 }

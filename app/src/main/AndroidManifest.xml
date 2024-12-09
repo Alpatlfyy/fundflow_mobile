@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <!-- Izin Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -23,21 +26,6 @@
             android:name=".Activity.SupportActivity2"
             android:exported="false"
             android:label="@string/title_activity_support2"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-        <activity
-            android:name=".Activity.SupportActivity"
-            android:exported="false"
-            android:label="@string/title_activity_support"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-        <activity
-            android:name=".Activity.AboutApp"
-            android:exported="false"
-            android:label="@string/title_activity_about_app"
-            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
-        <activity
-            android:name=".Activity.EditPasswordActivity"
-            android:exported="false"
-            android:label="@string/title_activity_edit_password"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity
             android:name=".Activity.EditDataActivity"
@@ -63,12 +51,13 @@
             android:name=".Activity.AddInvoiceActivity"
             android:exported="false"
             android:label="@string/title_activity_add_invoice_actifity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".Activity.InvoiceListActivity"
-            android:exported="false"
-            android:label="@string/title_activity_invoice_list_actifity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.CategoryactionActivity"
+            android:exported="false"
+            android:label="@string/title_activity_add_invoice_actifity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+
         <activity
             android:name=".Activity.reportActivity"
             android:exported="false"
@@ -87,7 +76,6 @@
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -100,6 +88,12 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activity.RegisterActivity"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="@string/Register_title"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.EditArusKasActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:label="@string/Register_title"
@@ -142,10 +136,10 @@
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".Activity.ArusKasActivity"
-            android:configChanges="uiMode"
             android:exported="true"
             android:label="CashFlow"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+            android:configChanges="uiMode"/>
         <activity
             android:name=".Activity.EditCategoriActivity"
             android:exported="true"

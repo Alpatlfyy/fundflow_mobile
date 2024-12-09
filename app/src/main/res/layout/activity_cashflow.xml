@@ -55,15 +55,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- RecyclerView untuk aktivitas -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/view1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp" />
-
             <!-- Daftar Tersimpan -->
             <TextView
                 android:layout_width="wrap_content"
@@ -74,70 +65,11 @@
                 android:layout_marginStart="16dp"
                 android:textStyle="bold" />
 
-            <!-- Pencarian Kategori -->
-            <LinearLayout
+            <!-- FrameLayout untuk menampung fragment -->
+            <FrameLayout
+                android:id="@+id/fragmentContainer1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="16dp"
-                android:background="@drawable/custom_edittext_selector"
-                android:padding="12dp"
-                android:layout_marginTop="8dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_search"
-                    android:contentDescription="Cari catatan kas"
-                    app:tint="@color/gray" />
-
-                <EditText
-                    android:id="@+id/searchCategory"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:hint="Cari Kategori"
-                    android:textColorHint="@color/gray"
-                    android:background="@android:color/transparent"
-                    android:inputType="text" />
-            </LinearLayout>
-
-            <!-- Gambar dan Teks jika belum ada kategori -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:layout_marginTop="40dp">
-
-                <ImageView
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
-                    android:src="@drawable/ic_no_data"
-                    android:contentDescription="No Data" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="Belum ada daftar yang tersimpan"
-                    android:textColor="@color/black"
-                    android:textSize="15dp"
-                    android:textStyle="bold"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:textAlignment="center"
-                    android:text="@string/add_category_instruction"
-                    android:fontFamily="@font/poppins_light"
-                    android:textColor="@color/gray"
-                    android:textStyle="normal"
-                    android:textSize="13sp" />
-
-            </LinearLayout>
+                android:layout_height="570dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
