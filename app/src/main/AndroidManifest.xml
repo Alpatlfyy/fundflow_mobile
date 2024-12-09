@@ -4,6 +4,8 @@
 
     <!-- Izin Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:allowBackup="true"
@@ -30,6 +32,11 @@
         <!-- Deklarasi aktivitas lainnya -->
         <activity
             android:name=".Activity.AddInvoiceActifity"
+            android:exported="false"
+            android:label="@string/title_activity_add_invoice_actifity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.CategoryactionActivity"
             android:exported="false"
             android:label="@string/title_activity_add_invoice_actifity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
@@ -73,11 +80,17 @@
             android:label="@string/Register_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
+            android:name=".Activity.EditArusKasActivity"
+            android:configChanges="uiMode"
+            android:exported="true"
+            android:label="@string/Register_title"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
             android:name=".Activity.DashboardActivity"
             android:configChanges="uiMode"
             android:exported="true"
-            android:label="Dashboard"
-            android:theme="@style/Theme.MaterialComponents.DayNight" />
+            android:label=""
+            android:theme="@style/DashboardTheme" />
         <activity
             android:name=".Activity.CashFlowActivity"
             android:configChanges="uiMode"

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tema utama aplikasi -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight">
+        <!-- Properti global tema aplikasi -->
+    </style>
+
+    <!-- Tema khusus untuk Dashboard -->
+    <style name="DashboardTheme" parent="Theme.MaterialComponents.DayNight">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+</resources>
+

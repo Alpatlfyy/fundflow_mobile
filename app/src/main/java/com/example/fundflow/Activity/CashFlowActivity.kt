@@ -1,25 +1,27 @@
 package com.example.fundflow.Activity
 
-import ExpenseListAdapter
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.ImageButton
-import android.widget.LinearLayout
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fundflow.R
 import com.example.fundflow.ViewModel.MainViewModel
 import com.example.fundflow.databinding.ActivityCashflowBinding
+import com.example.fundflow.fragment.ExpenseListFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 
-class CashFlowActivity : ComponentActivity() {
+class CashFlowActivity :  AppCompatActivity() {
     lateinit var binding: ActivityCashflowBinding
     private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var fragmentContainer1: FrameLayout
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,8 +29,7 @@ class CashFlowActivity : ComponentActivity() {
         binding = ActivityCashflowBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inisialisasi RecyclerView
-        initRecycleview()
+        displayFragment(0)
 
         // Ganti warna Status Bar
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -36,31 +37,35 @@ class CashFlowActivity : ComponentActivity() {
         }
 
         // Tombol Back
-        val backButton = findViewById<ImageButton>(R.id.btnBack)
-        backButton.setOnClickListener {
+        binding.btnBack.setOnClickListener {
             val intent = Intent(this, DashboardActivity::class.java)
             intent.putExtra("NAVIGATION_TARGET", "dashboard")
             startActivity(intent)
             finish() // Tutup CashFlowActivity setelah kembali
         }
 
-        val btncatat = findViewById<Button>(R.id.btncatat)
-        // Menangani klik pada tombol login
-        btncatat.setOnClickListener {
+        // Tombol Catat
+        binding.btncatat.setOnClickListener {
             Log.d("", "Catat button clicked")
             val intent = Intent(this, ArusKasActivity::class.java)
             startActivity(intent)
         }
+
+        // Tampilkan ExpenseListFragment secara default
+        displayFragment(0)
     }
 
+    // Fungsi untuk menampilkan fragment
+    private fun displayFragment(position: Int) {
+        val fragment = when (position) {
+            0 -> ExpenseListFragment() // Tampilkan ExpenseListFragment
+            else -> null
+        }
 
-
-    private fun initRecycleview() {
-        binding.view1.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        binding.view1.adapter = ExpenseListAdapter(mainViewModel.loadData())
+        fragment?.let {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer1, it) // Ganti fragmentContainer dengan id dari FrameLayout
+                .commit()
+        }
     }
 }
-
-
-
-

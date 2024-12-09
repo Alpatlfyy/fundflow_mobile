@@ -94,27 +94,6 @@ fun OnBoardingScreen(onFinished: () -> Unit, initialPage: Int = 0) {
                                 },
                                 fontSize = 16
                             )
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            // Teks "atau"
-                            Text(
-                                text = "atau",
-                                fontSize = 14.sp,
-                                color = Color.LightGray,
-                            )
-
-                            Spacer(modifier = Modifier.height(4.dp))
-
-                            GoogleLoginButton(
-                                onClick = {
-                                    // Aksi login dengan Google
-                                },
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(50.dp)
-                                    .clip(RoundedCornerShape(25.dp))
-                            )
                         }
                     } else {
                         // Tombol "Lanjut" sebelum halaman terakhir

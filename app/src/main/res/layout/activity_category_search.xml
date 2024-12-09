@@ -88,22 +88,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView" />
 
-    <!-- Kotak Pencarian Kategori -->
-    <EditText
-        android:id="@+id/cariKategori"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:hint="Cari Kategori"
-        android:padding="12dp"
-        android:background="@drawable/custom_edittext_selector"
-        app:layout_constraintTop_toBottomOf="@id/daftarTersimpan"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="8dp"
-        android:layout_marginHorizontal="16dp"
-        android:drawableStart="@drawable/ic_search"
-        android:drawablePadding="8dp"
-        android:drawableTint="@color/gray" />
 
     <!-- FrameLayout untuk menampung fragment -->
     <FrameLayout
@@ -111,7 +95,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/tambahKategori"
-        app:layout_constraintTop_toBottomOf="@+id/cariKategori"
+        app:layout_constraintTop_toBottomOf="@+id/daftarTersimpan"
         tools:layout_editor_absoluteX="16dp" />
 
     <!-- Tombol Tambah Kategori -->
