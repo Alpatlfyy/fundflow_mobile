@@ -64,12 +64,15 @@ class reportActivity : ComponentActivity() {
         // Inisialisasi Firestore
         val db = FirebaseFirestore.getInstance()
 
+        val totalSum = mutableStateOf(0)
+
         // MutableState untuk menyimpan data yang diambil dari Firestore
         val dataState = mutableStateOf<Map<String, Int>>(emptyMap())
 
         // Fungsi untuk mengambil data berdasarkan tanggal atau semua data
         fun fetchData(selectedDate: String? = null) {
             var query: Query = db.collection("aruskas")
+
 
             // Jika tanggal dipilih, tambahkan filter
             if (selectedDate != null) {
@@ -103,19 +106,35 @@ class reportActivity : ComponentActivity() {
             query.get()
                 .addOnSuccessListener { result ->
                     val dataMap = mutableMapOf<String, Int>()
-                    for (document in result) {
-                        val kategori = document.getString("kategori") ?: "Tidak Ada Kategori"
-                        val jumlah = document.getLong("jumlah")?.toInt() ?: 0
+                    var totalPemasukan = 0
+                    var totalPengeluaran = 0
 
-                        // Menambahkan jumlah ke kategori yang sama
-                        dataMap[kategori] = dataMap.getOrDefault(kategori, 0) + jumlah
+                    for (document in result) {
+                        val kategori = document.getString("kategori")
+                        val jumlah = document.getLong("jumlah")?.toInt() ?: 0
+                        val jenis = document.getString("jenis")
+
+                        // Pisahkan berdasarkan jenis
+                        if (jenis == "pemasukan") {
+                            totalPemasukan += jumlah
+                        } else if (jenis == "pengeluaran") {
+                            totalPengeluaran += jumlah
+                        }
+
+                        // Tambahkan jumlah ke kategori untuk rincian jika kategori tidak kosong/null
+                        if (!kategori.isNullOrBlank()) {
+                            dataMap[kategori] = dataMap.getOrDefault(kategori, 0) + jumlah
+                        }
                     }
+
+                    // Update state dengan data kategori dan total saldo
                     dataState.value = dataMap
-                    println("Hasil: $dataMap")
+                    totalSum.value = totalPemasukan - totalPengeluaran
                 }
                 .addOnFailureListener { exception ->
                     exception.printStackTrace()
                 }
+
         }
 
         // Ambil semua data saat pertama kali dibuka
@@ -129,6 +148,7 @@ class reportActivity : ComponentActivity() {
                 // Komposabel utama
                 PieChart(
                     data = dataState.value,
+                    totalSum = totalSum.value,
                     onDateSelected = { newDate ->
                         selectedDate = newDate
                         fetchData(newDate)
@@ -145,6 +165,7 @@ class reportActivity : ComponentActivity() {
 @Composable
 fun PieChart(
     data: Map<String, Int>,
+    totalSum: Int, // Tambahkan parameter ini
     radiusOuter: Dp = 120.dp,
     chartBarWidth: Dp = 16.dp,
     animDuration: Int = 1000,
@@ -184,8 +205,11 @@ fun PieChart(
         datePickerDialog.show()
     }
 
-    val totalSum = data.values.sum()
+//
     val floatValue = mutableListOf<Float>()
+
+
+
 
     // Hitung nilai float untuk sudut
     data.values.forEach { value ->
@@ -193,7 +217,9 @@ fun PieChart(
     }
 
     val colors = listOf(
-        Purple200, Purple500, Teal200, Purple700, Blue
+        Purple200, Purple500, Teal200, Purple700, Blue,
+        LightBlue, SkyBlue, BabyBlue, Indigo, Lavender,
+        Mint, Seafoam, Peach, Coral, Gold
     )
 
     var animationPlayed by remember { mutableStateOf(false) }

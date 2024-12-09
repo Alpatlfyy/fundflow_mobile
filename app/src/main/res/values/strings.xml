@@ -22,9 +22,8 @@
     <string name="title_activity_edit_password">EditPasswordActivity</string>
     <string name="title_activity_about_app">AboutApp</string>
     <string name="title_activity_support">SupportActivity</string>
-
-
-
+    <string name="title_activity_support2">SupportActivity2</string>
+    <string name="title_activity_about">AboutActivity</string>
 
 
 </resources>

@@ -118,7 +118,7 @@ class RegisterActivity : ComponentActivity() {
                         "role" to userRole
                     )
 
-                    firestore.collection("register")
+                    firestore.collection("users")
                         .document(task.result?.user?.uid ?: "")
                         .set(userData)
                         .addOnSuccessListener {

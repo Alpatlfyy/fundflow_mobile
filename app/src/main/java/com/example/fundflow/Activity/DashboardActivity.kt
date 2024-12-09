@@ -15,7 +15,7 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.TextView
+
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.fundflow.R
 import com.example.fundflow.ViewModel.MainViewModel
@@ -63,7 +63,7 @@ class DashboardActivity : AppCompatActivity() {
 
         // Inisialisasi FAB
         val fab: FloatingActionButton = findViewById(R.id.fab)
-        val invoiceBox = findViewById<LinearLayout>(R.id.anggota)
+        val invoiceBox = findViewById<LinearLayout>(R.id.invoiceBox)
         val LihatSemua = findViewById<TextView>(R.id.lihat_semua)
 
 

@@ -205,13 +205,13 @@ fun ProfileContent() {
             context.startActivity(Intent(context, EditDataActivity::class.java))
         }
         MenuItem(iconResId = R.drawable.lock_icon, label = "Ubah password") {
-            context.startActivity(Intent(context, EditPasswordActivity::class.java))
+            context.startActivity(Intent(context, ResetPassword::class.java))
         }
         MenuItem(iconResId = R.drawable.inf_icon, label = "Tentang aplikasi") {
-            context.startActivity(Intent(context, AboutApp::class.java))
+            context.startActivity(Intent(context, AboutActivity::class.java))
         }
         MenuItem(iconResId = R.drawable.sup_icon, label = "Bantuan") {
-            context.startActivity(Intent(context, SupportActivity::class.java))
+            context.startActivity(Intent(context, SupportActivity2::class.java))
         }
     }
 }

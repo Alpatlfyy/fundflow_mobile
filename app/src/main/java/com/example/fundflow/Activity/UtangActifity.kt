@@ -9,6 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -207,6 +208,7 @@ fun mainStateUtangListActivity(
                 modifier = Modifier
                     .size(24.dp)  // Ukuran ikon
                     .align(Alignment.CenterVertically) // Agar ikon sejajar vertikal
+                    .clickable { (context as? ComponentActivity)?.finish() }
             )
 
             // Spasi di antara ikon dan teks
