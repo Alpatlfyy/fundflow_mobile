@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 
 import androidx.compose.runtime.*
+import com.example.fundflow.UserSingleton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -46,7 +47,7 @@ import java.util.Locale
 
 class PiutangActivity : ComponentActivity() {
     private lateinit var firestore: FirebaseFirestore
-
+    val currentUid = UserSingleton.getUid()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -102,7 +103,10 @@ class PiutangActivity : ComponentActivity() {
 
 
     private fun getPiutang(onResult: (List<Piutang>) -> Unit) {
+
+
         firestore.collection("utang piutang")
+            .whereEqualTo("userid",currentUid)
             .whereEqualTo("jenis", "piutang")
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
@@ -407,7 +411,7 @@ fun PiutangItem(
                     }
                     Button(
                         onClick = onMarkAsPaid, // Callback dipanggil di sini
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Green),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFFA500)),
                         modifier = Modifier.size(width = 78.dp, height = 30.dp)
                     ) {
                         Text(

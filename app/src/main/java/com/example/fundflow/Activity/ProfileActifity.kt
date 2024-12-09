@@ -27,7 +27,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.zIndex
 import com.example.fundflow.Activity.ui.theme.FundflowTheme
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.firestore
 
 
@@ -46,10 +48,11 @@ class ProfileActivity : ComponentActivity() {
 fun FetchUserData(email: String): User1? {
     var user by remember { mutableStateOf<User1?>(null) }
     val firestore = Firebase.firestore
+    val currentUid = UserSingleton.getUid()
 
     LaunchedEffect(email) {
         firestore.collection("users")
-            .whereEqualTo("email", email)
+            .whereEqualTo(FieldPath.documentId(), currentUid)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {

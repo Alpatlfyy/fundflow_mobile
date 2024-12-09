@@ -33,6 +33,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 import com.example.fundflow.Activity.ui.theme.FundflowTheme
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -81,7 +82,9 @@ class InvoiceListActivity : ComponentActivity() {
     }
 
     private fun getInvoices(onResult: (List<Invoice>) -> Unit) {
+        val currentUid = UserSingleton.getUid()
         firestore.collection("invoice")
+            .whereEqualTo("userid",currentUid)
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
                     println("Error listening to updates: $exception")

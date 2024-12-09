@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fundflow.Activity.NoteAdapter
 import com.example.fundflow.Activity.NoteEdit
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.example.fundflow.model.NoteItem
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -52,7 +53,9 @@ class NoteFragmentRec : Fragment() {
     }
 
     private fun loadCategoriesFromFirestore() {
+        val currentUid = UserSingleton.getUid()
         firestore.collection("catatan")
+            .whereEqualTo("userid",currentUid)
             .get()
             .addOnSuccessListener { documents ->
                 noteList.clear()

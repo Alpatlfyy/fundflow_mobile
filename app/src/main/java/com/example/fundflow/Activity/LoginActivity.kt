@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
@@ -64,15 +65,28 @@ class LoginActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            // Login berhasil
-                            Toast.makeText(context, "Login berhasil!", Toast.LENGTH_SHORT).show()
-                            context.startActivity(Intent(context, DashboardActivity::class.java))
+                            // Ambil UID pengguna yang login
+                            val user = FirebaseAuth.getInstance().currentUser
+                            val uid = user?.uid
+
+                            if (uid != null) {
+                                // Simpan UID ke UserSingleton
+                                UserSingleton.setUid(uid)
+
+
+                                // Lanjutkan ke DashboardActivity
+                                context.startActivity(Intent(context, DashboardActivity::class.java))
+                            } else {
+                                Toast.makeText(context, "Gagal mendapatkan UID pengguna.", Toast.LENGTH_SHORT).show()
+                            }
                         } else {
                             // Login gagal
                             Toast.makeText(context, "Login gagal: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
             }
+
+
 
             // Menangani klik pada teks lupa password
             forgotPasswordText.setOnClickListener {

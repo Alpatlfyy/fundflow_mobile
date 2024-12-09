@@ -48,6 +48,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
+import com.example.fundflow.UserSingleton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import kotlinx.coroutines.tasks.await
@@ -55,6 +56,7 @@ import kotlinx.coroutines.tasks.await
 
 
 class EditDataActivity : ComponentActivity() {
+    val currentUid = UserSingleton.getUid()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,6 +71,7 @@ class EditDataActivity : ComponentActivity() {
 
 @Composable
 fun mainstateEditData() {
+    val currentUid = UserSingleton.getUid()
     val context = LocalContext.current
     var name by remember { mutableStateOf("") }
     var username by remember { mutableStateOf("") }
@@ -77,9 +80,10 @@ fun mainstateEditData() {
     var telepon by remember { mutableStateOf("") }
     var dataLoaded by remember { mutableStateOf(false) }
 
+
     // Firestore reference
     val firestore = FirebaseFirestore.getInstance()
-    val documentId = "ys6Y5FgVE90mKZ0W9NZ5" // Ganti dengan ID dokumen Anda
+    val documentId = currentUid // Ganti dengan ID dokumen Anda
     val documentRef = firestore.collection("users").document(documentId)
 
     // Ambil data dari Firestore

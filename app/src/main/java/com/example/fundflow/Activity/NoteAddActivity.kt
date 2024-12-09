@@ -9,6 +9,7 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.google.firebase.firestore.FirebaseFirestore
 
 class NoteAddActivity : AppCompatActivity() {
@@ -53,10 +54,11 @@ class NoteAddActivity : AppCompatActivity() {
     }
 
     private fun saveNoteToDatabase(title: String, content: String) {
-
+        val currentUid = UserSingleton.getUid()
         val note = hashMapOf(
             "title" to title,
-            "content" to content
+            "content" to content,
+            "userid" to currentUid
         )
 
         firestore.collection("catatan")

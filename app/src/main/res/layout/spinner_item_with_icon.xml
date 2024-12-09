@@ -1,22 +1,8 @@
-<!-- spinner_item_with_icon.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="8dp">
-
-    <ImageView
-        android:id="@+id/category_circle_icon"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_gravity="center_vertical" />
-
-    <TextView
-        android:id="@+id/category_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="Category Name"
-        android:textSize="14sp"
-        android:gravity="center_vertical" />
-</LinearLayout>
+    android:textSize="12dp"
+    android:padding="2dp"
+    android:background="@android:color/transparent"
+    android:fontFamily="@font/poppins_light"/>

@@ -51,27 +51,29 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
+import com.example.fundflow.UserSingleton
 import com.google.firebase.Timestamp
 import java.util.Calendar
 
 
-class AddInvoiceActivity : AppCompatActivity() {
+class AddInvoiceActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             FundflowTheme {
-                mainStateAddInvoiceActivity(this)
+                mainStateAddInvoiceActivity()
             }
         }
     }
 }
 
 @Composable
-fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
+fun mainStateAddInvoiceActivity() {
     val context = LocalContext.current
 
     val companyNameState = remember { mutableStateOf("") }
@@ -88,6 +90,7 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
     val selectedDateState = remember { mutableStateOf<Timestamp?>(null) }
     val selectedTempoState = remember { mutableStateOf<Timestamp?>(null) }
     val nominalstate = remember { mutableStateOf(0L) }
+    val currentUid = UserSingleton.getUid()
 
 
 
@@ -133,6 +136,7 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
                     modifier = Modifier
                         .size(24.dp)
                         .align(Alignment.CenterVertically)
+                        .clickable { (context as? ComponentActivity)?.finish() }
                 )
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -265,7 +269,8 @@ fun mainStateAddInvoiceActivity(activity: AppCompatActivity? = null) {
                                     nominal = nominalstate.value, // Menggunakan Long
                                     nomorInvoice = invoiceNumberState.value,
                                     status = selectedStatusState.value, // Menggunakan status terpilih
-                                    tanggalInvoice = selectedDateState.value?: Timestamp.now() // Menggunakan Timestamp yang benar
+                                    tanggalInvoice = selectedDateState.value?: Timestamp.now(), // Menggunakan Timestamp yang benar
+                                    userid = currentUid
                                 )
 
                                 generateInvoicePdf(
@@ -443,7 +448,8 @@ fun saveInvoiceToFirestore(
     nominal: Long,
     nomorInvoice: String,
     status: String,
-    tanggalInvoice: Timestamp
+    tanggalInvoice: Timestamp,
+    userid: String
 ) {
     val firestore = FirebaseFirestore.getInstance()
     val invoiceData = hashMapOf(
@@ -457,7 +463,8 @@ fun saveInvoiceToFirestore(
         "nominal" to nominal,
         "nomor invoice" to nomorInvoice,
         "status" to status,
-        "tanggal invoice" to tanggalInvoice
+        "tanggal invoice" to tanggalInvoice,
+        "userid" to userid
     )
 
     firestore.collection("invoice").add(invoiceData)

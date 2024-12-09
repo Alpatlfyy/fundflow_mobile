@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.example.fundflow.model.AnggotaItem
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
@@ -49,6 +50,7 @@ class AnggotaActivity : AppCompatActivity() {
             val intent = Intent(this, AnggotaAddActivity::class.java)
             startActivity(intent)
         }
+        val currentUid = UserSingleton.getUid()
 
         // Dengarkan perubahan data di Firestore
         listenToAnggotaChanges()
@@ -56,7 +58,9 @@ class AnggotaActivity : AppCompatActivity() {
 
     // Fungsi untuk mendengarkan perubahan data anggota di Firestore
     private fun listenToAnggotaChanges() {
+        val currentUid = UserSingleton.getUid()
         firestore.collection("anggota")
+            .whereEqualTo("userid",currentUid)
             .orderBy("createdAt", Query.Direction.DESCENDING) // Urutkan berdasarkan waktu kirim
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {

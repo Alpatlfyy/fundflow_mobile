@@ -7,6 +7,7 @@ import android.view.ContextThemeWrapper
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,7 +42,24 @@ class AnggotaEdit : AppCompatActivity() {
         val btnSimpan = findViewById<Button>(R.id.tambahAnggota)
 
         // Data spinner
-        val jabatanList = listOf("Ketua", "Sekretaris", "Bendahara", "Anggota")
+        val jabatanList = listOf(
+            "Ketua",
+            "Sekretaris",
+            "Bendahara",
+            "Anggota",
+            "Direktur",
+            "Manager Teknis",
+            "Supervisor",
+            "Admin",
+            "Staff Teknik",
+            "Driver",
+            "Drafter",
+            "Finance",
+            "Estimator",
+            "Invoice",
+            "Office Boy"
+        )
+
         val jenisKelaminList = listOf("Laki-laki", "Perempuan")
 
         // Mengatur adapter untuk spinner
@@ -63,6 +81,7 @@ class AnggotaEdit : AppCompatActivity() {
         val jabatanAnggota = intent.getStringExtra("JABATAN_ANGGOTA")
         val jenisKelaminAnggota = intent.getStringExtra("JENIS_KELAMIN_ANGGOTA")
 
+
         // Menampilkan data di komponen UI
         etNama.setText(namaAnggota ?: "")
         etEmail.setText(emailAnggota ?: "")
@@ -83,6 +102,7 @@ class AnggotaEdit : AppCompatActivity() {
             val updatedTanggal = etTanggal.text.toString().trim()
             val updatedJabatan = spinnerJabatan.selectedItem.toString()
             val updatedJenisKelamin = spinnerJenisKelamin.selectedItem.toString()
+            val currentUid = UserSingleton.getUid()
 
             // Validasi data
             if (updatedNama.isEmpty() || updatedEmail.isEmpty() || updatedNoTelepon.isEmpty() || updatedTanggal.isEmpty()) {
@@ -100,7 +120,8 @@ class AnggotaEdit : AppCompatActivity() {
                         "noTelepon" to updatedNoTelepon,
                         "tanggalLahir" to updatedTanggal,
                         "jabatan" to updatedJabatan,
-                        "jenisKelamin" to updatedJenisKelamin
+                        "jenisKelamin" to updatedJenisKelamin,
+                        "userid" to currentUid
                     )
                 ).addOnSuccessListener {
                     Toast.makeText(this, "Data berhasil diperbarui!", Toast.LENGTH_SHORT).show()

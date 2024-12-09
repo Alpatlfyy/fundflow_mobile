@@ -11,13 +11,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.example.fundflow.adapter.CategoryAdapter
 import com.example.fundflow.model.CategoryItem
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 
 class KategoriFragmentRec2 : Fragment() {
-
+    val currentUid = UserSingleton.getUid()
     private lateinit var recyclerViewCategory: RecyclerView
     private lateinit var categoryAdapter: CategoryAdapter
     private lateinit var loadingIndicator: ProgressBar
@@ -54,6 +55,7 @@ class KategoriFragmentRec2 : Fragment() {
         loadingIndicator.visibility = View.VISIBLE
 
         firestore.collection("kategori")
+            .whereEqualTo("userid",currentUid)
             .whereEqualTo("type", type)
             .orderBy("name", Query.Direction.ASCENDING)
             .get()

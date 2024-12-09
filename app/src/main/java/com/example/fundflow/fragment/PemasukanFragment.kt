@@ -17,11 +17,12 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.* // Untuk penggunaan Date
 
 class PemasukanFragment : Fragment() {
-
+    val currentUid = UserSingleton.getUid()
     private lateinit var categorySpinner: Spinner
     private lateinit var circleIconView: ImageView
     private lateinit var amountEditText: EditText
@@ -93,7 +94,9 @@ class PemasukanFragment : Fragment() {
 
     // Fungsi untuk mengambil data kategori dari Firestore
     private fun fetchCategories(callback: (List<Category>) -> Unit) {
+
         firestore.collection("kategori")
+            .whereEqualTo("userid",currentUid)
             .whereEqualTo("type", "Pemasukan") // Filter kategori pemasukan
             .get()
             .addOnSuccessListener { querySnapshot ->
@@ -123,7 +126,7 @@ class PemasukanFragment : Fragment() {
         val selectedCategoryIcon = categories.find { it.name == selectedCategory }?.icon // Cari ikon kategori
         val amount = amountEditText.text.toString().toDoubleOrNull()
         val notes = notesEditText.text.toString()
-        val userid = null
+        val userid = currentUid
 
         // Validasi input
         if (amount == null || amount <= 0) {

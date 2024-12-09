@@ -13,6 +13,7 @@
 
     <!-- Register Text -->
     <TextView
+        android:id="@+id/txt_register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
@@ -23,6 +24,7 @@
         android:layout_marginBottom="8dp" /> <!-- Memberi sedikit margin ke bawah -->
 
     <TextView
+        android:id="@+id/txt_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_light"
@@ -33,6 +35,7 @@
 
     <!-- Description Text Part 2 -->
     <TextView
+        android:id="@+id/txt_description2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_light"
@@ -42,6 +45,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="40dp"/>
     <TextView
+        android:id="@+id/txt_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nama Anda"
@@ -83,6 +87,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/txt_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nama Pengguna"
@@ -124,6 +129,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/txt_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Email"
@@ -165,6 +171,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/txt_role"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Atur sebagai"
@@ -212,6 +219,7 @@
 
 
     <TextView
+        android:id="@+id/txt_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Password"
@@ -292,7 +300,6 @@
     </LinearLayout>
 
 </LinearLayout>
-
 
 
 

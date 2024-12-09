@@ -169,6 +169,7 @@
                     android:layout_marginEnd="8dp">
 
                     <LinearLayout
+                        android:id="@+id/invoice"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:gravity="center"
@@ -199,6 +200,7 @@
                     android:layout_marginEnd="8dp">
 
                     <LinearLayout
+                        android:id="@+id/anggota"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:gravity="center"
@@ -229,6 +231,7 @@
                     android:layout_marginEnd="8dp">
 
                     <LinearLayout
+                        android:id="@+id/catatan"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:gravity="center"
@@ -259,6 +262,7 @@
                     android:layout_marginEnd="8dp">
 
                     <LinearLayout
+                        android:id="@+id/utang"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:gravity="center"
@@ -274,7 +278,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Catatan"
+                        android:text="Utang"
                         android:textColor="#000000"
                         android:textSize="12sp" />
                 </LinearLayout>
@@ -289,6 +293,7 @@
                     android:layout_marginEnd="8dp">
 
                     <LinearLayout
+                        android:id="@+id/piutang"
                         android:layout_width="70dp"
                         android:layout_height="70dp"
                         android:gravity="center"
@@ -304,7 +309,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Catatan"
+                        android:text="Piutang"
                         android:textColor="#000000"
                         android:textSize="12sp" />
                 </LinearLayout>

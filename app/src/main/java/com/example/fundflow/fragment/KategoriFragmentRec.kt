@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.example.fundflow.adapter.CategoryAdapter
 import com.example.fundflow.model.CategoryItem
 import com.google.firebase.firestore.FirebaseFirestore
@@ -24,6 +25,7 @@ class KategoriFragmentRec : Fragment() {
     private val firestore = FirebaseFirestore.getInstance()
     private val categoryList = mutableListOf<CategoryItem>()
     var tabType: String = "Pemasukan" // Default type is "Pemasukan"
+    val currentUid = UserSingleton.getUid()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,16 +57,20 @@ class KategoriFragmentRec : Fragment() {
         loadingIndicator.visibility = View.VISIBLE
 
         firestore.collection("kategori")
+            .whereEqualTo("userid", currentUid)
             .whereEqualTo("type", type)
             .orderBy("name", Query.Direction.ASCENDING)
             .get()
             .addOnSuccessListener { documents ->
-                if (!isAdded) return@addOnSuccessListener // Skip if fragment is detached
+                if (!isAdded) return@addOnSuccessListener
 
+                Log.d("FirestoreSuccess", "Documents retrieved: ${documents.size()}")
                 val categories = mutableListOf<CategoryItem>()
                 if (documents.isEmpty) {
+                    Log.d("FirestoreEmpty", "No categories found for type: $type")
                     showEmptyState()
                 } else {
+                    categories.clear()
                     for (document in documents) {
                         val categoryName = document.getString("name") ?: "Unknown"
                         val categoryIcon = document.getString("icon")
@@ -74,12 +80,14 @@ class KategoriFragmentRec : Fragment() {
                 }
                 loadingIndicator.visibility = View.GONE
             }
-            .addOnFailureListener {
-                if (!isAdded) return@addOnFailureListener // Skip if fragment is detached
+            .addOnFailureListener { e ->
+                if (!isAdded) return@addOnFailureListener
+                Log.e("FirestoreError", "Failed to load categories", e)
                 showErrorState()
                 loadingIndicator.visibility = View.GONE
             }
     }
+
 
     fun refreshCategories() {
         Log.d("KategoriFragmentRec", "Refreshing categories for tabType: $tabType")

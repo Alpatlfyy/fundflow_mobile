@@ -46,6 +46,7 @@ import com.example.fundflow.Activity.ui.theme.Purple500
 import com.example.fundflow.Activity.ui.theme.Purple700
 import com.example.fundflow.Activity.ui.theme.Teal200
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.Query
 
@@ -69,10 +70,12 @@ class reportActivity : ComponentActivity() {
         // MutableState untuk menyimpan data yang diambil dari Firestore
         val dataState = mutableStateOf<Map<String, Int>>(emptyMap())
 
+        val currentUid = UserSingleton.getUid()
+
         // Fungsi untuk mengambil data berdasarkan tanggal atau semua data
         fun fetchData(selectedDate: String? = null) {
             var query: Query = db.collection("aruskas")
-
+                .whereEqualTo("userid",currentUid)
 
             // Jika tanggal dipilih, tambahkan filter
             if (selectedDate != null) {
@@ -117,17 +120,17 @@ class reportActivity : ComponentActivity() {
                         // Pisahkan berdasarkan jenis
                         if (jenis == "pemasukan") {
                             totalPemasukan += jumlah
+                            // Tambahkan kategori pemasukan ke dataMap
+                            if (!kategori.isNullOrBlank()) {
+                                dataMap[kategori] = dataMap.getOrDefault(kategori, 0) + jumlah
+                            }
                         } else if (jenis == "pengeluaran") {
                             totalPengeluaran += jumlah
-                        }
-
-                        // Tambahkan jumlah ke kategori untuk rincian jika kategori tidak kosong/null
-                        if (!kategori.isNullOrBlank()) {
-                            dataMap[kategori] = dataMap.getOrDefault(kategori, 0) + jumlah
+                            // Tidak menambahkan kategori pengeluaran ke dataMap
                         }
                     }
 
-                    // Update state dengan data kategori dan total saldo
+                    // Update state dengan data kategori pemasukan dan total saldo
                     dataState.value = dataMap
                     totalSum.value = totalPemasukan - totalPengeluaran
                 }
@@ -377,7 +380,7 @@ fun PieChart(
                 ) {
                     // Teks "Total" dengan warna hex #000192
                     Text(
-                        text = "Total Saldo",                   // Teks "Total"
+                        text = "Total Kas",                   // Teks "Total"
                         fontSize = 24.sp,                 // Ukuran teks
                         color = Color(0xFF000192),        // Warna teks menggunakan kode hex #000192 (biru tua)
                         fontWeight = FontWeight.Medium    // Teks dengan weight sedang
@@ -419,7 +422,7 @@ fun DetailsPieChart(
             .fillMaxWidth() // Memastikan Box mengisi lebar penuh
     ) {
         Text(
-            text = "Detail Saldo", // Tambahkan teks yang diinginkan
+            text = "Detail Kas", // Tambahkan teks yang diinginkan
             fontSize = 16.sp,                   // Ukuran teks
             fontWeight = FontWeight.Medium,       // Teks bold
             color = Color(0xFF8F90FF),                // Warna teks

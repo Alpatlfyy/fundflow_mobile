@@ -16,6 +16,7 @@ import androidx.appcompat.widget.Toolbar
 import com.example.fundflow.Adapter.RecentOperationsAdapter
 
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.example.fundflow.fragment.KategoriFragmentKeluar
 import com.example.fundflow.fragment.KategoriFragmentMasuk
 import com.example.fundflow.model.RecentOperation
@@ -214,13 +215,15 @@ class TambahCategoryActivity : AppCompatActivity() {
         categoryType: String,
         iconResourceId: Int
     ) {
+        val currentUid = UserSingleton.getUid()
         db.collection("kategori")
             .whereEqualTo("name", categoryName)
             .whereEqualTo("type", categoryType)
+            .whereEqualTo("userid",currentUid)
             .get()
             .addOnSuccessListener { documents ->
                 if (documents.isEmpty) {
-                    addCategoryToFirestore(categoryName, categoryType, iconResourceId)
+                    addCategoryToFirestore(categoryName, categoryType, iconResourceId, userid = currentUid)
                 } else {
                     Toast.makeText(this, "Kategori sudah ada", Toast.LENGTH_SHORT).show()
                 }
@@ -234,13 +237,15 @@ class TambahCategoryActivity : AppCompatActivity() {
     private fun addCategoryToFirestore(
         categoryName: String,
         categoryType: String,
-        iconResourceId: Int
+        iconResourceId: Int,
+        userid: String
     ) {
         val iconName = getDrawableName(iconResourceId)
         val category = hashMapOf(
             "name" to categoryName,
             "type" to categoryType,
-            "icon" to iconName
+            "icon" to iconName,
+            "userid" to userid
         )
 
         db.collection("kategori")
@@ -250,7 +255,8 @@ class TambahCategoryActivity : AppCompatActivity() {
                 val newCategory = RecentOperation(
                     type = "Kategori",
                     name = categoryName,
-                    icon = iconResourceId,
+                    icon = iconResourceId
+
                 )
                 recentOperationsList.add(0, newCategory) // Tambahkan ke atas
                 recentOperationsAdapter.notifyItemInserted(0)

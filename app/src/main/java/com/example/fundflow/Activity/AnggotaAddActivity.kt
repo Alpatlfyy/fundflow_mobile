@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.fundflow.R
+import com.example.fundflow.UserSingleton
 import com.example.fundflow.model.AnggotaItem
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FieldValue
@@ -16,7 +17,7 @@ import java.util.Calendar
 class AnggotaAddActivity : AppCompatActivity() {
 
     private lateinit var firestore: FirebaseFirestore
-
+    val currentUid = UserSingleton.getUid()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.anggota_add_activity)
@@ -36,6 +37,7 @@ class AnggotaAddActivity : AppCompatActivity() {
         val etNoTelepon: EditText = findViewById(R.id.etNoTelepon)
         val btnTanggal: ImageView = findViewById(R.id.btnTanggal)
         val btnSimpanAnggota: Button = findViewById(R.id.tambahAnggota)
+
 
         // Spinner Jabatan dan Jenis Kelamin
         val spinnerJabatan: Spinner = findViewById(R.id.spinnerJenisJabatan)
@@ -70,7 +72,24 @@ class AnggotaAddActivity : AppCompatActivity() {
     }
 
     private fun setupSpinners(spinnerJabatan: Spinner, spinnerJenisKelamin: Spinner) {
-        val jabatanList = listOf("Ketua", "Sekretaris", "Bendahara", "Anggota")
+        val jabatanList = listOf(
+            "Ketua",
+            "Sekretaris",
+            "Bendahara",
+            "Anggota",
+            "Direktur",
+            "Manager Teknis",
+            "Supervisor",
+            "Admin",
+            "Staff Teknik",
+            "Driver",
+            "Drafter",
+            "Finance",
+            "Estimator",
+            "Invoice",
+            "Office Boy"
+        )
+
         val jenisKelaminList = listOf("Laki-laki", "Perempuan")
 
         val jabatanAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, jabatanList)
@@ -121,6 +140,7 @@ class AnggotaAddActivity : AppCompatActivity() {
         val noTelepon = etNoTelepon.text.toString().trim()
         val jabatan = spinnerJabatan.selectedItem.toString()
         val jenisKelamin = spinnerJenisKelamin.selectedItem.toString()
+        val currentUid = UserSingleton.getUid()
 
         // Validasi input
         if (TextUtils.isEmpty(nama) || TextUtils.isEmpty(alamat) || TextUtils.isEmpty(tanggalLahir) || TextUtils.isEmpty(noTelepon)) {
@@ -135,7 +155,8 @@ class AnggotaAddActivity : AppCompatActivity() {
             "noTelepon" to noTelepon,
             "jabatan" to jabatan,
             "jenisKelamin" to jenisKelamin,
-            "createdAt" to FieldValue.serverTimestamp() // Tambahkan timestamp server
+            "createdAt" to FieldValue.serverTimestamp(), // Tambahkan timestamp server
+            "userid" to currentUid
         )
     }
 

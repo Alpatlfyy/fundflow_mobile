@@ -102,8 +102,8 @@
             android:name=".Activity.DashboardActivity"
             android:configChanges="uiMode"
             android:exported="true"
-            android:label="Dashboard"
-            android:theme="@style/Theme.MaterialComponents.DayNight" />
+            android:label=""
+            android:theme="@style/DashboardTheme" />
         <activity
             android:name=".Activity.UtangActivity"
             android:configChanges="uiMode"
@@ -180,6 +180,11 @@
             android:exported="true"
             android:label="login_item_title"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".Activity.InvoiceListActivity"
+            android:exported="false"
+            android:label="@string/title_activity_invoice_list_actifity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
     </application>
 
 </manifest>

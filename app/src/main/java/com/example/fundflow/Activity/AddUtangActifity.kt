@@ -49,6 +49,7 @@ import com.example.fundflow.Activity.ui.theme.FundflowTheme
 import com.example.fundflow.R
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import com.example.fundflow.UserSingleton
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
@@ -82,6 +83,7 @@ fun mainstateAddUtangActivity() {
     val UserIdState = remember { mutableStateOf("") }
     var isSelectingJatuhTempo by remember { mutableStateOf(false) }
     var isSelectingTanggalAwal by remember { mutableStateOf(false) }
+    val currentUid = UserSingleton.getUid()
 
     val tanggalAwalText = TanggalAwalState.value?.toDate()?.let {
         SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(it)
@@ -278,7 +280,7 @@ fun mainstateAddUtangActivity() {
                     keterangan = keteranganState.value, // Menggunakan nilai dari state keterangan
                     nominal = NominalState.value.toLongOrNull() ?: 0L, // Mengonversi ke Long
                     tanggalAwal = TanggalAwalState.value?: Timestamp.now(), // Menggunakan nilai dari state tanggalAwal
-                    userId = UserIdState.value, // Menggunakan nilai dari state userId
+                    userId = currentUid, // Menggunakan nilai dari state userId
                     status = "Belum Lunas"
                 )
             },
